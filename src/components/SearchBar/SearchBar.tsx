@@ -10,7 +10,7 @@ interface MyState {
 }
 
 export class SearchBar extends Component<MyProps, MyState> {
-  constructor(props: any) {
+  constructor(props: MyProps) {
     super(props);
     this.state = { input: '' };
     this.handleChange = this.handleChange.bind(this);
@@ -44,6 +44,7 @@ export class SearchBar extends Component<MyProps, MyState> {
             onChange={this.handleChange}
           />
         </div>
+        <button type='button'>ABC</button>
       </div>
     );
   }

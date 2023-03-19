@@ -4,12 +4,12 @@ import { HomePage } from './pages/home-page/HomePage';
 import { AboutPage } from './pages/about-page/AboutPage';
 import { NotFound } from './pages/not-found/NotFound';
 import { Header } from './components/Header/Header';
-import { BrowserRouter as Router } from 'react-router-dom';
 
 class App extends Component {
+
   render() {
     return (
-      <Router>
+      <div>
         <Header />
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -17,7 +17,7 @@ class App extends Component {
           <Route path="about" element={<AboutPage />} />
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
-      </Router>
+      </div>
     );
   }
 }
