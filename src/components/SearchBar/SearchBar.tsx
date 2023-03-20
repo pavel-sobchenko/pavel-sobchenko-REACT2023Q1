@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { ChangeEvent, Component } from 'react';
 import './SearchBar.css';
 
 interface MyProps {
@@ -23,7 +23,7 @@ export class SearchBar extends Component<MyProps, MyState> {
       }); 
   }
 
-  private handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+  private handleChange(e: ChangeEvent<HTMLInputElement>) {
     if (e.target.value !== this.state.input) {
       this.setState({input: e.target.value}, () => {
         this.props.filterChange(this.state.input);
