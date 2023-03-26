@@ -29,6 +29,6 @@
 
 a {
     color: inherit;
-    font-family: inherit;
+    font-family: monospace !important;
     text-decoration: none;
 }

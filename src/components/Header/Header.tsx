@@ -9,20 +9,28 @@ export class Header extends Component {
         <nav id='nav'>
             <ul>
                 <li>
-                <NavLink to="home" style={({ isActive }) => {
-                    return { textDecoration: isActive ? 'underline' : 'none' };
-                }}
-                >
-                Main Page
-                </NavLink>
-                </li>
-                <li>
-                <NavLink to="about" style={({ isActive }) => {
+                    <NavLink to="home" style={({ isActive }) => {
                         return { textDecoration: isActive ? 'underline' : 'none' };
                     }}
                     >
-                    About Us
-                </NavLink>
+                    Main Page
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to="about" style={({ isActive }) => {
+                            return { textDecoration: isActive ? 'underline' : 'none' };
+                        }}
+                        >
+                        About Us
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to="form" style={({ isActive }) => {
+                        return { textDecoration: isActive ? 'underline' : 'none' };
+                    }}
+                    >
+                        Create Your Cocktail
+                    </NavLink>
                 </li>
             </ul>
         </nav>

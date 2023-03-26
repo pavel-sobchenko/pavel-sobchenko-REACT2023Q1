@@ -44,7 +44,6 @@ export class SearchBar extends Component<MyProps, MyState> {
             onChange={this.handleChange}
           />
         </div>
-        <button type='button'>ABC</button>
       </div>
     );
   }
