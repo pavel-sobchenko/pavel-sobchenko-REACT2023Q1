@@ -35,7 +35,7 @@ export class SearchBar extends Component<MyProps, MyState> {
   render() {
     return (
       <div className="main">
-        <h1>Cocktail Search</h1>
+        <h1 className='text-white mt-4 text-base'>Cocktail Search</h1>
         <div className="search">
           <input 
             className='search-input'

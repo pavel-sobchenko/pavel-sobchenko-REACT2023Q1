@@ -1,31 +1,47 @@
-import React, { ChangeEvent, Component, createRef, RefObject, SyntheticEvent } from "react";
+import React, { ChangeEvent, Component, createRef, FormEvent, RefObject } from "react";
 import './FormPage.css'
 import { COCKTAIL_TYPES, GLASS_TYPES } from "../../models/constants";
 
 interface FormProps {}
 
+interface CocktailModel {
+    name: string;
+    description: string;
+    img: string;
+    date: string;
+    isAlco: boolean;
+    family: string[];
+    glassType: string;
+    ingredients: string[];
+}
+
 interface FormState {
-    cocktail: {
-        name: string;
-        description: string;
-        img: string;
-        ingredients: string[];
-    }
+    cocktail: CocktailModel;
+    cocktailList: CocktailModel[];
+    isSubmitted: boolean;
+}
+
+const emptyForm: CocktailModel = {
+    name: '',
+    description: '',
+    img: '',
+    date: '',
+    isAlco: true,
+    family: [],
+    glassType: GLASS_TYPES[0].name,
+    ingredients: []
 }
 
 export class FormPage extends Component<FormProps, FormState> {
 
-    input: any
+    input: RefObject<any>;
 
     constructor(props: FormProps) {
         super(props);
         this.state = {
-            cocktail: {
-                name: '',
-                description: '',
-                img: '',
-                ingredients: []
-            }
+            cocktail: emptyForm,
+            cocktailList: [],
+            isSubmitted: false
         };
 
         this.input = createRef();
@@ -35,22 +51,55 @@ export class FormPage extends Component<FormProps, FormState> {
         this.handleDescription = this.handleDescription.bind(this);
         this.handleImage = this.handleImage.bind(this);
         this.handleAdd = this.handleAdd.bind(this);
+        this.handleDate = this.handleDate.bind(this);
+    }
+
+    handleFamily = (event: ChangeEvent<HTMLInputElement>) => {
+        let cocktail = {...this.state.cocktail};
+        if (event.target.checked) {
+            cocktail.family.push(event.target.name);
+        } else {
+            const index = cocktail.family.indexOf(event.target.name);
+            if (index > -1) {
+                cocktail.family.splice(index, 1);
+            }
+        }
+        this.setState({cocktail});
+    }
+
+    handleGlass = (event: ChangeEvent<HTMLSelectElement>) => {
+        let cocktail = {...this.state.cocktail};
+        cocktail.glassType = event.target.value;
+        this.setState({cocktail});
+    }
+
+    handleAlco = (event: ChangeEvent<HTMLInputElement>) => {
+        let cocktail = {...this.state.cocktail};
+        cocktail.isAlco = event.target.value === 'alco';
+        this.setState({cocktail});
+    }
+
+    handleDate(event: ChangeEvent<HTMLInputElement>) {
+        let cocktail = {...this.state.cocktail};
+        cocktail.date = event.target.value;
+        this.setState({cocktail});
     }
 
     handleAdd() {
         let value = this.input.current.value;
-        if (value.lengt < 1) return;
+        if (value.length < 1) return;
         let cocktail = {...this.state.cocktail};
         cocktail.ingredients.push(value);
         this.setState({cocktail});
         this.input.current.value = '';
     }
 
-    handleImage(event: any) {
+    handleImage(event: ChangeEvent<HTMLInputElement>) {
         if (event.target.files && event.target.files[0]) {
             let cocktail = {...this.state.cocktail};
             cocktail.img = URL.createObjectURL(event.target.files[0]);
             this.setState({cocktail});
+            event.target.value = "";
         }
     }
 
@@ -66,21 +115,44 @@ export class FormPage extends Component<FormProps, FormState> {
         this.setState({cocktail});
     }
 
-    handleSubmit(event: any) {
-        event.preventDefault();
-        const data = new FormData(event.target);
-        console.log(data.get('username')); // example of getting data from form
+    handleSubmit() {
+        if(this.state.cocktail.name.length > 0) {
+            const currentCocktail = this.state.cocktail;
+            const obj = {
+                cocktail: {
+                    name: '',
+                    description: '',
+                    img: '',
+                    date: '',
+                    isAlco: true,
+                    family: [],
+                    glassType: GLASS_TYPES[0].name,
+                    ingredients: []
+                }
+                , cocktailList: [...this.state.cocktailList, currentCocktail]
+            };
+            this.setState(obj);
+            this.setState({
+                ...this.state,
+                isSubmitted: false
+            });
+        } else {
+            this.setState({
+                ...this.state,
+                isSubmitted: true
+            });
+        }
     }
 
     render() {
         return (
             <div className='form-container p-8'>
-                <form onSubmit={this.handleSubmit}>
+                <form className='w-1/2 m-auto'>
                     <div className="space-y-4">
                         <div className="border-b border-gray-900/10 pb-6">
                             <h2 className="text-base font-bold leading-7 text-gray-900">Add your own cocktail recipe</h2>
 
-                            <div className="mt-2 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                            <div className="mt-2 grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-6">
                                 <div className="sm:col-span-4">
                                     <label htmlFor="username" className="block font-semibold text-sm font-medium leading-6 text-gray-900">
                                         Name it
@@ -94,9 +166,16 @@ export class FormPage extends Component<FormProps, FormState> {
                                                 autoComplete="username"
                                                 className="block flex-1 border-0 py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                                 placeholder="ex: Zombie"
+                                                required
+                                                value={this.state.cocktail.name}
                                                 onChange={this.handleName}
                                             />
                                         </div>
+                                        {
+                                            this.state.isSubmitted
+                                            && this.state.cocktail.name.length === 0
+                                            && <div className='error text-red-600'>*Length should be more than 0</div>
+                                        }
                                     </div>
                                 </div>
 
@@ -109,8 +188,8 @@ export class FormPage extends Component<FormProps, FormState> {
                                             id="about"
                                             name="about"
                                             rows={3}
-                                            className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
-                                            defaultValue={''}
+                                            className="block w-full p-4 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
+                                            value={this.state.cocktail.description}
                                             onChange={this.handleDescription}
                                         />
                                     </div>
@@ -138,7 +217,9 @@ export class FormPage extends Component<FormProps, FormState> {
                                     <input
                                         type="date"
                                         name="date"
-                                        className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                                        value={this.state.cocktail.date}
+                                        className="block flex-1 border-0 py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                                        onChange={this.handleDate}
                                     />
                                 </div>
                             </div>
@@ -147,13 +228,15 @@ export class FormPage extends Component<FormProps, FormState> {
                         <div className="border-b border-gray-900/10 pb-6">
                             <h2 className="text-base font-semibold leading-7 text-gray-900">Cocktail recipe</h2>
                             <fieldset>
-                                <div className="mt-6 space-y-6">
+                                <div className="mt-2 space-y-2">
                                     <div className="flex items-center gap-x-3">
                                         <input
                                             id="alco"
                                             name="push-notifications"
                                             type="radio"
-                                            defaultChecked
+                                            value='alco'
+                                            onChange={this.handleAlco}
+                                            checked={this.state.cocktail.isAlco}
                                             className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                                         />
                                         <label htmlFor="push-everything" className="block text-sm font-medium leading-6 text-gray-900">
@@ -164,7 +247,10 @@ export class FormPage extends Component<FormProps, FormState> {
                                         <input
                                             id="algo-free"
                                             name="push-notifications"
+                                            value='free'
                                             type="radio"
+                                            onChange={this.handleAlco}
+                                            checked={!this.state.cocktail.isAlco}
                                             className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                                         />
                                         <label htmlFor="push-email" className="block text-sm font-medium leading-6 text-gray-900">
@@ -175,17 +261,19 @@ export class FormPage extends Component<FormProps, FormState> {
                             </fieldset>
 
                             <div className="border-b border-gray-900/10 pb-4">
-                                <div className="mt-10 space-y-10">
+                                <div className="mt-4 space-y-2">
                                     <fieldset>
                                         <legend className="text-base font-semibold leading-6 text-gray-900">Family</legend>
-                                        <div className="mt-6 grid grid-cols-1  gap-y-4 gap-x-6 sm:grid-cols-3">
-                                            {COCKTAIL_TYPES.map(item => (
+                                        <div className="mt-2 grid grid-cols-1  gap-y-4 gap-x-6 sm:grid-cols-3">
+                                            {COCKTAIL_TYPES.map((item, index, array) => (
                                                 <div key={item.name} className="relative flex gap-x-3">
                                                     <div className="flex h-6 items-center">
                                                         <input
-                                                            name="type"
+                                                            name={item.name}
                                                             type="checkbox"
+                                                            checked={this.state.cocktail.family.some(f => f === item.name)}
                                                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                                            onChange={this.handleFamily}
                                                         />
                                                     </div>
                                                     <div className="text-sm leading-6">
@@ -212,10 +300,12 @@ export class FormPage extends Component<FormProps, FormState> {
                                         <select
                                             id="glass"
                                             name="glass"
+                                            onChange={this.handleGlass}
+                                            value={this.state.cocktail.glassType}
                                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                                         >
                                             {GLASS_TYPES.map(item => (
-                                                <option key={item}>{item}</option>
+                                                <option key={item.id}>{item.name}</option>
                                             ))}
                                         </select>
                                     </div>
@@ -226,22 +316,27 @@ export class FormPage extends Component<FormProps, FormState> {
                                 <label className="block text-base font-semibold leading-6 text-gray-900">
                                     Add ingredients:
                                 </label>
-                                <div className="flex">
+                                <div className="flex mt-2">
                                     <div className="sm:col-span-4">
-                                        <div className="">
-                                            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                                <input
-                                                    type="text"
-                                                    name="drink"
-                                                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                                    placeholder="ex: Black Rum"
-                                                    ref={this.input}
-                                                />
-                                            </div>
+                                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                                            <input
+                                                type="text"
+                                                name="drink"
+                                                className="block flex-1 border-0 py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                                                placeholder="ex: Black Rum"
+                                                ref={this.input}
+                                            />
                                         </div>
+                                        {
+                                            this.state.isSubmitted
+                                            && this.state.cocktail.ingredients.length === 0
+                                            && <div className='error text-red-600'>*Add ingredients</div>
+                                        }
                                     </div>
                                     <div>
-                                        <button type="button" className=" rounded-md py-2 px-3 text-sm font-semibold text-gray-900 bg-indigo-400" onClick={this.handleAdd}>
+                                        <button type="button" className=" rounded-md ml-2 py-2 px-3 text-sm font-semibold text-gray-900 bg-indigo-400"
+                                                onClick={this.handleAdd}
+                                        >
                                             Add
                                         </button>
                                     </div>
@@ -271,13 +366,18 @@ export class FormPage extends Component<FormProps, FormState> {
                         </button>
                         <button
                             type="submit"
+                            onClick={this.handleSubmit}
                             className="rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         >
                             Save
                         </button>
                     </div>
                 </form>
-
+                <div>{this.state.cocktailList.map(item => {
+                    return <div key={item.name}>
+                        <img src={item.img} alt="" className='cocktail-img'/>
+                    </div>
+                })}</div>
             </div>
         );
     }

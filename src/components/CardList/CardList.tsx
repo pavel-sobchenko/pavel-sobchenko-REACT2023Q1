@@ -2,7 +2,6 @@ import { Component, PropsWithChildren } from 'react';
 import React from 'react';
 import { DrinksState } from '../../models/drink.model';
 import { Card } from '../Card/Card';
-import './CardList.css';
 
 export class CardList extends Component<PropsWithChildren<DrinksState>> {
 
@@ -16,7 +15,7 @@ export class CardList extends Component<PropsWithChildren<DrinksState>> {
       <Card key={drink.idDrink} value={drink}/>
     );
     return (
-      <div className='cocktailList'>{drinkItems}</div>
+      <div className='cocktailList flex flex-wrap justify-around w-1/2 m-auto'>{drinkItems}</div>
     );
   }
 }
