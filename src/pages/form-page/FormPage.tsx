@@ -1,6 +1,6 @@
 import React, { ChangeEvent, Component, createRef, RefObject, SyntheticEvent } from "react";
 import './FormPage.css'
-import { COCKTAIL_TYPES } from "../../models/constants";
+import { COCKTAIL_TYPES, GLASS_TYPES } from "../../models/constants";
 
 interface FormProps {}
 
@@ -9,10 +9,13 @@ interface FormState {
         name: string;
         description: string;
         img: string;
+        ingredients: string[];
     }
 }
 
 export class FormPage extends Component<FormProps, FormState> {
+
+    input: any
 
     constructor(props: FormProps) {
         super(props);
@@ -20,14 +23,27 @@ export class FormPage extends Component<FormProps, FormState> {
             cocktail: {
                 name: '',
                 description: '',
-                img: ''
+                img: '',
+                ingredients: []
             }
         };
+
+        this.input = createRef();
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleName = this.handleName.bind(this);
         this.handleDescription = this.handleDescription.bind(this);
         this.handleImage = this.handleImage.bind(this);
+        this.handleAdd = this.handleAdd.bind(this);
+    }
+
+    handleAdd() {
+        let value = this.input.current.value;
+        if (value.lengt < 1) return;
+        let cocktail = {...this.state.cocktail};
+        cocktail.ingredients.push(value);
+        this.setState({cocktail});
+        this.input.current.value = '';
     }
 
     handleImage(event: any) {
@@ -51,7 +67,6 @@ export class FormPage extends Component<FormProps, FormState> {
     }
 
     handleSubmit(event: any) {
-        debugger;
         event.preventDefault();
         const data = new FormData(event.target);
         console.log(data.get('username')); // example of getting data from form
@@ -59,7 +74,7 @@ export class FormPage extends Component<FormProps, FormState> {
 
     render() {
         return (
-            <div className='form-container m-8'>
+            <div className='form-container p-8'>
                 <form onSubmit={this.handleSubmit}>
                     <div className="space-y-4">
                         <div className="border-b border-gray-900/10 pb-6">
@@ -77,7 +92,7 @@ export class FormPage extends Component<FormProps, FormState> {
                                                 name="username"
                                                 id="username"
                                                 autoComplete="username"
-                                                className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                                                className="block flex-1 border-0 py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                                 placeholder="ex: Zombie"
                                                 onChange={this.handleName}
                                             />
@@ -87,7 +102,7 @@ export class FormPage extends Component<FormProps, FormState> {
 
                                 <div className="col-span-full">
                                     <label htmlFor="about" className="block font-semibold text-sm font-medium leading-6 text-gray-900">
-                                        Describe your cocktail. Add some prehistory, live story or recommendations how to drink
+                                        Describe your cocktail. Add some prehistory, live story or recommendations how cook or drink
                                     </label>
                                     <div className="mt-2">
                                         <textarea
@@ -117,9 +132,20 @@ export class FormPage extends Component<FormProps, FormState> {
                             </div>
                         </div>
 
+                        <div className="mt-4 flex">
+                            <div className="sm:col-span-4">
+                                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                                    <input
+                                        type="date"
+                                        name="date"
+                                        className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
                         <div className="border-b border-gray-900/10 pb-6">
                             <h2 className="text-base font-semibold leading-7 text-gray-900">Cocktail recipe</h2>
-
                             <fieldset>
                                 <div className="mt-6 space-y-6">
                                     <div className="flex items-center gap-x-3">
@@ -177,29 +203,65 @@ export class FormPage extends Component<FormProps, FormState> {
                             </div>
 
 
-                            <div className="mt-10 grid grid-cols-1 gap-y-4 gap-x-6 sm:grid-cols-6">
-
+                            <div className="">
                                 <div className="sm:col-span-3">
-                                    <label htmlFor="country" className="block text-sm font-medium leading-6 text-gray-900">
+                                    <label htmlFor="country" className="block text-base font-semibold leading-6 text-gray-900">
                                         Glass type
                                     </label>
                                     <div className="mt-2">
                                         <select
-                                            id="country"
-                                            name="country"
-                                            autoComplete="country-name"
+                                            id="glass"
+                                            name="glass"
                                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                                         >
-                                            <option>Height Ball</option>
-                                            <option>Shot</option>
-                                            <option>Glass</option>
+                                            {GLASS_TYPES.map(item => (
+                                                <option key={item}>{item}</option>
+                                            ))}
                                         </select>
                                     </div>
                                 </div>
+                            </div>
 
+                            <div className='mt-2'>
+                                <label className="block text-base font-semibold leading-6 text-gray-900">
+                                    Add ingredients:
+                                </label>
+                                <div className="flex">
+                                    <div className="sm:col-span-4">
+                                        <div className="">
+                                            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                                                <input
+                                                    type="text"
+                                                    name="drink"
+                                                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                                                    placeholder="ex: Black Rum"
+                                                    ref={this.input}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button type="button" className=" rounded-md py-2 px-3 text-sm font-semibold text-gray-900 bg-indigo-400" onClick={this.handleAdd}>
+                                            Add
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
+                        {
+                            this.state.cocktail.ingredients.length > 0 &&
+                            <>
+                                <h2 className="text-base font-bold leading-7 text-gray-900">Ingredients:</h2>
+                                <ul className='list-disc ml-10'>
+                                    {
+                                        this.state.cocktail.ingredients.map(item =>
+                                            <li key={item}>{item}</li>
+                                        )
+                                    }
+                                </ul>
+                            </>
+                        }
 
                     </div>
 

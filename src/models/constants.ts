@@ -6,3 +6,9 @@ export const COCKTAIL_TYPES = [
     {name: 'Shooter Cocktails', example: 'B-52, HeadShot'},
     {name: 'Non-Alcoholic Cocktails', example: 'Shirley Temple, Mojito'}
 ];
+
+export const GLASS_TYPES = [
+    'Wine goblet', 'Shot glass', 'Single rock glass', 'Martini glass', 'Margarita glass',
+    'Champagne flute', 'Pilsner glass', 'Snifter glass', 'The highball', 'The lowball', 'Hurricane glass',
+    'Pitcher glass', 'Copper mugs', 'Red wine glass', 'White wine glass'
+]
