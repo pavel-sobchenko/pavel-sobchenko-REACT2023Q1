@@ -1,24 +1,17 @@
-import React, { ChangeEvent, Component, createRef, FormEvent, RefObject } from "react";
+import React, { ChangeEvent, Component, createRef, FormEvent, MouseEventHandler, RefObject } from "react";
 import './FormPage.css'
 import { COCKTAIL_TYPES, GLASS_TYPES } from "../../models/constants";
+import { CocktailModel } from "../../models/coctail.model";
+import { FormCard } from "../../components/FormCard/FormCard";
+import { Notification } from "../../components/Notification/Notification";
 
 interface FormProps {}
-
-interface CocktailModel {
-    name: string;
-    description: string;
-    img: string;
-    date: string;
-    isAlco: boolean;
-    family: string[];
-    glassType: string;
-    ingredients: string[];
-}
 
 interface FormState {
     cocktail: CocktailModel;
     cocktailList: CocktailModel[];
     isSubmitted: boolean;
+    isNotification: boolean;
 }
 
 const emptyForm: CocktailModel = {
@@ -41,7 +34,8 @@ export class FormPage extends Component<FormProps, FormState> {
         this.state = {
             cocktail: emptyForm,
             cocktailList: [],
-            isSubmitted: false
+            isSubmitted: false,
+            isNotification: false
         };
 
         this.input = createRef();
@@ -87,7 +81,7 @@ export class FormPage extends Component<FormProps, FormState> {
 
     handleAdd() {
         let value = this.input.current.value;
-        if (value.length < 1) return;
+        if (value.length < 1 || this.state.cocktail.ingredients.some(v => v === value)) return;
         let cocktail = {...this.state.cocktail};
         cocktail.ingredients.push(value);
         this.setState({cocktail});
@@ -115,7 +109,8 @@ export class FormPage extends Component<FormProps, FormState> {
         this.setState({cocktail});
     }
 
-    handleSubmit() {
+    handleSubmit(e: any) {
+        e.preventDefault();
         if(this.state.cocktail.name.length > 0) {
             const currentCocktail = this.state.cocktail;
             const obj = {
@@ -131,11 +126,18 @@ export class FormPage extends Component<FormProps, FormState> {
                 }
                 , cocktailList: [...this.state.cocktailList, currentCocktail]
             };
-            this.setState(obj);
             this.setState({
-                ...this.state,
-                isSubmitted: false
+                ...obj,
+                isSubmitted: false,
+                isNotification: true
             });
+
+            setTimeout(() => {
+                this.setState({
+                    ...this.state,
+                    isNotification: false
+                })
+            }, 2000);
         } else {
             this.setState({
                 ...this.state,
@@ -146,7 +148,9 @@ export class FormPage extends Component<FormProps, FormState> {
 
     render() {
         return (
+
             <div className='form-container p-8'>
+                {this.state.isNotification && <Notification text='New Cocktail just created!' /> }
                 <form className='w-1/2 m-auto'>
                     <div className="space-y-4">
                         <div className="border-b border-gray-900/10 pb-6">
@@ -373,10 +377,8 @@ export class FormPage extends Component<FormProps, FormState> {
                         </button>
                     </div>
                 </form>
-                <div>{this.state.cocktailList.map(item => {
-                    return <div key={item.name}>
-                        <img src={item.img} alt="" className='cocktail-img'/>
-                    </div>
+                <div className='cocktail-cards mt-10'>{this.state.cocktailList.map(item => {
+                    return <FormCard key={item.name} name={item.name}  date={item.date} description={item.description} family={item.family} glassType={item.glassType} img={item.img} ingredients={item.ingredients} isAlco/>
                 })}</div>
             </div>
         );

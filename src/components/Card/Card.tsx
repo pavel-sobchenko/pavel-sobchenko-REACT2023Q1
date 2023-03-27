@@ -11,7 +11,7 @@ export class Card extends Component<PropsWithChildren<{key: string, value: ICock
                     <div className='title'>{drink.strDrink}</div>
                     <div className='category'>{drink.strCategory}</div>
                     <img className='image' src={drink.strDrinkThumb} alt="" />
-                    <div className='ingridients'>
+                    <div className='ingredients'>
                         <ul>
                             {drink.strIngredient1 && <li>{drink.strIngredient1}</li>}
                             {drink.strIngredient2 && <li>{drink.strIngredient2}</li>}
