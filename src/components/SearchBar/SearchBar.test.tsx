@@ -5,7 +5,7 @@ describe('SearchBar', () => {
     it('should contain input', () => {
         render(<SearchBar filterChange={() => {}}/>);
         const input = screen.getByRole('textbox');
-        expect(input).toBeInTheDOM();
+        expect(input).toBeInTheDocument();
     })
 
     it('it should allow text data', () => {

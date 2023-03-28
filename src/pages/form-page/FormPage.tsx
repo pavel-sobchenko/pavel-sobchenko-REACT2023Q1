@@ -83,7 +83,7 @@ export class FormPage extends Component<FormProps, FormState> {
         let value = this.input.current.value;
         if (value.length < 1 || this.state.cocktail.ingredients.some(v => v === value)) return;
         let cocktail = {...this.state.cocktail};
-        cocktail.ingredients.push(value);
+        cocktail.ingredients.push(value[0].toUpperCase() + value.slice(1));
         this.setState({cocktail});
         this.input.current.value = '';
     }
@@ -105,7 +105,8 @@ export class FormPage extends Component<FormProps, FormState> {
 
     handleName(event: ChangeEvent<HTMLInputElement>) {
         let cocktail = {...this.state.cocktail};
-        cocktail.name = event.target.value;
+        const value = event.target.value;
+        cocktail.name = value[0].toUpperCase() + value.slice(1);
         this.setState({cocktail});
     }
 
@@ -154,7 +155,7 @@ export class FormPage extends Component<FormProps, FormState> {
                 <form className='w-1/2 m-auto'>
                     <div className="space-y-4">
                         <div className="border-b border-gray-900/10 pb-6">
-                            <h2 className="text-base font-bold leading-7 text-gray-900">Add your own cocktail recipe</h2>
+                            <h1 className="text-base font-bold leading-7 text-gray-900">Add your own cocktail recipe</h1>
 
                             <div className="mt-2 grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-6">
                                 <div className="sm:col-span-4">

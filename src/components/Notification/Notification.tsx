@@ -16,7 +16,7 @@ export class Notification extends Component<{ text: string }> {
                 !
                 <span className="sr-only">Check icon</span>
             </div>
-            <div className="ml-3 text-sm font-normal">{text}</div>
+            <div className="message ml-3 text-sm font-normal">{text}</div>
         </div>
     };
 }
