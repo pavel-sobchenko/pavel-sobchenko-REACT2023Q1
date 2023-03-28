@@ -1,4 +1,10 @@
-import React, { ChangeEvent, Component, createRef, FormEvent, MouseEventHandler, RefObject } from "react";
+import React, {
+    ChangeEvent,
+    Component,
+    createRef,
+    RefObject,
+    SyntheticEvent
+} from "react";
 import './FormPage.css'
 import { COCKTAIL_TYPES, GLASS_TYPES } from "../../models/constants";
 import { CocktailModel } from "../../models/coctail.model";
@@ -27,7 +33,7 @@ const emptyForm: CocktailModel = {
 
 export class FormPage extends Component<FormProps, FormState> {
 
-    input: RefObject<any>;
+    input: RefObject<HTMLInputElement>;
 
     constructor(props: FormProps) {
         super(props);
@@ -80,12 +86,12 @@ export class FormPage extends Component<FormProps, FormState> {
     }
 
     handleAdd() {
-        let value = this.input.current.value;
+        let value = this.input.current!.value;
         if (value.length < 1 || this.state.cocktail.ingredients.some(v => v === value)) return;
         let cocktail = {...this.state.cocktail};
         cocktail.ingredients.push(value[0].toUpperCase() + value.slice(1));
         this.setState({cocktail});
-        this.input.current.value = '';
+        this.input.current!.value = '';
     }
 
     handleImage(event: ChangeEvent<HTMLInputElement>) {
@@ -110,7 +116,7 @@ export class FormPage extends Component<FormProps, FormState> {
         this.setState({cocktail});
     }
 
-    handleSubmit(e: any) {
+    handleSubmit(e: SyntheticEvent) {
         e.preventDefault();
         if(this.state.cocktail.name.length > 0) {
             const currentCocktail = this.state.cocktail;
