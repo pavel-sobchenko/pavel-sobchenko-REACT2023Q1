@@ -1,0 +1,35 @@
+.card {
+    border: 2px solid grey;
+    border-radius: 8px;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: silver;
+    margin: 8px;
+}
+
+.image {
+    width: 150px;
+}
+
+.title {
+    font-weight: 500;
+    font-size: 18px;
+    margin: 4px;
+}
+
+.category {
+    font-weight: 400;
+    font-size: 14px;
+    margin: 4px;
+}
+
+.ingredients {
+    width: 200px;
+}
+
+ul {
+    list-style: square;
+}
