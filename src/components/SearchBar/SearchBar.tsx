@@ -1,50 +1,40 @@
-import { ChangeEvent, Component } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import './SearchBar.css';
 
-interface MyProps {
-    filterChange: (value: string) => void
-}
+function SearchBar(props: { filterChange: (value: string) => void }) {
+  const { filterChange } = props;
+  const [searchValue, setSearchValue] = useState('');
 
-interface MyState {
-  input: string;
-}
+  useEffect(() => {
+    const value = window.localStorage.getItem('inputValue') || '';
+    setSearchValue(value);
+    filterChange(searchValue);
+  }, []);
 
-export class SearchBar extends Component<MyProps, MyState> {
-  constructor(props: MyProps) {
-    super(props);
-    this.state = { input: '' };
-    this.handleChange = this.handleChange.bind(this);
-  }
+  useEffect(() => {
+    filterChange(searchValue);
+    window.localStorage.setItem('inputValue', searchValue);
+  }, [searchValue]);
 
-  componentDidMount() {
-    let value = window.localStorage.getItem('inputValue') || '';
-    this.setState({input: value}, () => {
-        this.props.filterChange(this.state.input);
-      }); 
-  }
-
-  private handleChange(e: ChangeEvent<HTMLInputElement>) {
-    if (e.target.value !== this.state.input) {
-      this.setState({input: e.target.value}, () => {
-        this.props.filterChange(this.state.input);
-        window.localStorage.setItem('inputValue', this.state.input);
-      });  
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value !== searchValue) {
+      setSearchValue(e.target.value);
     }
-  }  
+  };
 
-  render() {
-    return (
-      <div className="main">
-        <h1 className='text-white mt-4 text-base'>Cocktail Search</h1>
-        <div className="search">
-          <input 
-            className='search-input'
-            type="text"
-            value={this.state.input}
-            onChange={this.handleChange}
-          />
-        </div>
+  return (
+    <div className="main">
+      <h1 className="text-white mt-4 text-base">Cocktail Search</h1>
+      <div className="search">
+        <input
+          className="search-input"
+          type="text"
+          value={searchValue}
+          onChange={handleChange}
+        />
       </div>
-    );
-  }
+    </div>
+  );
 }
+
+export default SearchBar;

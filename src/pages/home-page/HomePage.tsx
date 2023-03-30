@@ -1,41 +1,35 @@
-import { Component } from 'react';
-import React from 'react';
-import { SearchBar } from '../../components/SearchBar/SearchBar';
-import { CardList } from '../../components/CardList/CardList';
-import { ICocktail } from '../../models/coctail.model';
+import React, { useEffect, useState } from 'react';
+import SearchBar from '../../components/SearchBar/SearchBar';
+import CardList from '../../components/CardList/CardList';
 import data from '../../assets/coctails.json';
-import { DrinksState } from '../../models/drink.model';
 import './HomePage.css';
+import { CocktailModel } from '../../models/coctail.model';
 
-interface MyProps {}
+function HomePage() {
+  const [drinks, setDrinks] = useState<CocktailModel[]>([]);
+  const [filteredDrinks, setFilteredDrinks] = useState<CocktailModel[]>([]);
+  const [searchValue, setSearchValue] = useState('');
 
-export class HomePage extends Component<MyProps, DrinksState> {
+  useEffect(() => {
+    setDrinks(data.drinks as CocktailModel[]);
+    setFilteredDrinks(data.drinks as CocktailModel[]);
+  }, []);
 
-  constructor(props: MyProps) {
-    super(props);
-    this.state = {drinks: []};
-    this.filterChange = this.filterChange.bind(this);
-  }
+  const filterChange = (value: string) => {
+    setSearchValue(value);
+    setFilteredDrinks(
+      drinks.filter((drink) =>
+        drink.name.toLocaleLowerCase().includes(value.toLocaleLowerCase())
+      )
+    );
+  };
 
-  componentDidMount(): void {
-      this.setState({
-        drinks: data.drinks as ICocktail[]
-      });
-  }
-
-  private filterChange(value: string) {
-    const updatedList = (data.drinks as ICocktail[]).filter(drink => drink.strDrink.toLocaleLowerCase().includes(value.toLocaleLowerCase()));
-    this.setState({drinks: updatedList});
-  }  
-
-  render() {
-    {
-      return (
-        <div id='drink-background' className='image-background'>
-          <SearchBar filterChange={this.filterChange}  />
-          <CardList drinks = {this.state.drinks}/>
-        </div>
-      );
-    }
-  }
+  return (
+    <div id="drink-background" className="image-background">
+      <SearchBar filterChange={filterChange} />
+      <CardList drinks={filteredDrinks} />
+    </div>
+  );
 }
+
+export default HomePage;

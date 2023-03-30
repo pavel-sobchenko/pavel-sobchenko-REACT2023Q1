@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>11/11</span>
+                <span class='fraction'>13/13</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>11/11</span>
+                <span class='fraction'>13/13</span>
             </div>
         
             
@@ -103,53 +103,31 @@
 <a name='L38'></a><a href='#L38'>38</a>
 <a name='L39'></a><a href='#L39'>39</a>
 <a name='L40'></a><a href='#L40'>40</a>
-<a name='L41'></a><a href='#L41'>41</a>
-<a name='L42'></a><a href='#L42'>42</a>
-<a name='L43'></a><a href='#L43'>43</a>
-<a name='L44'></a><a href='#L44'>44</a>
-<a name='L45'></a><a href='#L45'>45</a>
-<a name='L46'></a><a href='#L46'>46</a>
-<a name='L47'></a><a href='#L47'>47</a>
-<a name='L48'></a><a href='#L48'>48</a>
-<a name='L49'></a><a href='#L49'>49</a>
-<a name='L50'></a><a href='#L50'>50</a>
-<a name='L51'></a><a href='#L51'>51</a>
-<a name='L52'></a><a href='#L52'>52</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L41'></a><a href='#L41'>41</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -165,57 +143,46 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { ChangeEvent, Component } from 'react';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { ChangeEvent, useEffect, useState } from 'react';
 import './SearchBar.css';
 &nbsp;
-interface MyProps {
-    filterChange: (value: string) =&gt; void
-}
+function SearchBar(props: { filterChange: (value: string) =&gt; void }) {
+  const { filterChange } = props;
+  const [searchValue, setSearchValue] = useState('');
 &nbsp;
-interface MyState {
-  input: string;
-}
+  useEffect(() =&gt; {
+    const value = window.localStorage.getItem('inputValue') || '';
+    setSearchValue(value);
+    filterChange(searchValue);
+  }, []);
 &nbsp;
-export class SearchBar extends Component&lt;MyProps, MyState&gt; {
-  constructor(props: MyProps) {
-    super(props);
-    this.state = { input: '' };
-    this.handleChange = this.handleChange.bind(this);
-  }
+  useEffect(() =&gt; {
+    filterChange(searchValue);
+    window.localStorage.setItem('inputValue', searchValue);
+  }, [searchValue]);
 &nbsp;
-  componentDidMount() {
-    let value = window.localStorage.getItem('inputValue') || '';
-    this.setState({input: value}, () =&gt; {
-        this.props.filterChange(this.state.input);
-      }); 
-  }
-&nbsp;
-  private handleChange(e: ChangeEvent&lt;HTMLInputElement&gt;) {
-    <span class="missing-if-branch" title="else path not taken" >E</span>if (e.target.value !== this.state.input) {
-      this.setState({input: e.target.value}, () =&gt; {
-        this.props.filterChange(this.state.input);
-        window.localStorage.setItem('inputValue', this.state.input);
-      });  
+  const handleChange = (e: ChangeEvent&lt;HTMLInputElement&gt;) =&gt; {
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (e.target.value !== searchValue) {
+      setSearchValue(e.target.value);
     }
-  }  
+  };
 &nbsp;
-  render() {
-    return (
-      &lt;div className="main"&gt;
-        &lt;h1&gt;Cocktail Search&lt;/h1&gt;
-        &lt;div className="search"&gt;
-          &lt;input 
-            className='search-input'
-            type="text"
-            value={this.state.input}
-            onChange={this.handleChange}
-          /&gt;
-        &lt;/div&gt;
-        &lt;button type='button'&gt;ABC&lt;/button&gt;
+  return (
+    &lt;div className="main"&gt;
+      &lt;h1 className="text-white mt-4 text-base"&gt;Cocktail Search&lt;/h1&gt;
+      &lt;div className="search"&gt;
+        &lt;input
+          className="search-input"
+          type="text"
+          value={searchValue}
+          onChange={handleChange}
+        /&gt;
       &lt;/div&gt;
-    );
-  }
+    &lt;/div&gt;
+  );
 }
+&nbsp;
+export default SearchBar;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -223,7 +190,7 @@ export class SearchBar extends Component&lt;MyProps, MyState&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-03-20T01:28:33.515Z
+                at 2023-03-30T00:00:13.440Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>10/10</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
@@ -87,7 +87,25 @@
 <a name='L22'></a><a href='#L22'>22</a>
 <a name='L23'></a><a href='#L23'>23</a>
 <a name='L24'></a><a href='#L24'>24</a>
-<a name='L25'></a><a href='#L25'>25</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">53x</span>
+<span class="cline-any cline-yes">53x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -95,8 +113,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">150x</span>
-<span class="cline-any cline-yes">150x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">186x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -111,38 +133,52 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { PropsWithChildren } from 'react';
-import { Component } from "react";
-import { ICocktail } from '../../models/coctail.model';
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from 'react';
 import './Card.css';
+import { CocktailModel } from '../../models/coctail.model';
 &nbsp;
-export class Card extends Component&lt;PropsWithChildren&lt;{key: string, value: ICocktail}&gt;&gt; {
-&nbsp;
-    render() {
-        const drink = this.props.value;
-        return &lt;div className='card'&gt;
-                    &lt;div className='title'&gt;{drink.strDrink}&lt;/div&gt;
-                    &lt;div className='category'&gt;{drink.strCategory}&lt;/div&gt;
-                    &lt;img className='image' src={drink.strDrinkThumb} alt="" /&gt;
-                    &lt;div className='ingridients'&gt;
-                        &lt;ul&gt;
-                            {drink.strIngredient1 &amp;&amp; &lt;li&gt;{drink.strIngredient1}&lt;/li&gt;}
-                            {drink.strIngredient2 &amp;&amp; &lt;li&gt;{drink.strIngredient2}&lt;/li&gt;}
-                            {drink.strIngredient3 &amp;&amp; &lt;li&gt;{drink.strIngredient3}&lt;/li&gt;}
-                            {drink.strIngredient4 &amp;&amp; &lt;li&gt;{drink.strIngredient4}&lt;/li&gt;}
-                            {drink.strIngredient5 &amp;&amp; &lt;li&gt;{drink.strIngredient5}&lt;/li&gt;}
-                        &lt;/ul&gt;
-                    &lt;/div&gt;
+function Card(props: { drink: CocktailModel }) {
+  const { drink } = props;
+  return (
+    &lt;div className="card-container relative"&gt;
+      &lt;div className="card"&gt;
+        &lt;div className="title underline"&gt;{drink.name}&lt;/div&gt;
+        &lt;div className="category"&gt;Category: {drink.category}&lt;/div&gt;
+        &lt;div className="glass"&gt;Glass type: {drink.glass}&lt;/div&gt;
+        &lt;div className="alcoholic"&gt;
+          Is Alcoholic: {drink.alcoholic ? 'Yes' : 'No'}
+        &lt;/div&gt;
+        &lt;img className="image" src={drink.image} alt="" /&gt;
+        &lt;div className="ingredients"&gt;
+          &lt;ul&gt;
+            {drink.ingredients.map((item) =&gt; (
+              &lt;li key={item.product} className="list-disc"&gt;
+                &lt;div className="product text-base"&gt;
+                  &lt;span&gt;
+                    {item.product} - {item.volume}
+                  &lt;/span&gt;
                 &lt;/div&gt;
-    };
-}</pre></td></tr></table></pre>
+              &lt;/li&gt;
+            ))}
+          &lt;/ul&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div className="instructions absolute"&gt;{drink.instructions}&lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+&nbsp;
+export default Card;
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-03-20T01:28:33.515Z
+                at 2023-03-30T00:00:13.440Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

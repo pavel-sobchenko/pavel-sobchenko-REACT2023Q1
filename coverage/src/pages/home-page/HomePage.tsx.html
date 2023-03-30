@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">90.9% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/8</span>
+                <span class='fraction'>10/11</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>3/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">90.9% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>7/7</span>
+                <span class='fraction'>10/11</span>
             </div>
         
             
@@ -98,13 +98,7 @@
 <a name='L33'></a><a href='#L33'>33</a>
 <a name='L34'></a><a href='#L34'>34</a>
 <a name='L35'></a><a href='#L35'>35</a>
-<a name='L36'></a><a href='#L36'>36</a>
-<a name='L37'></a><a href='#L37'>37</a>
-<a name='L38'></a><a href='#L38'>38</a>
-<a name='L39'></a><a href='#L39'>39</a>
-<a name='L40'></a><a href='#L40'>40</a>
-<a name='L41'></a><a href='#L41'>41</a>
-<a name='L42'></a><a href='#L42'>42</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L36'></a><a href='#L36'>36</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -112,26 +106,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">75x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -145,47 +133,41 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Component } from 'react';
-import React from 'react';
-import { SearchBar } from '../../components/SearchBar/SearchBar';
-import { CardList } from '../../components/CardList/CardList';
-import { ICocktail } from '../../models/coctail.model';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useEffect, useState } from 'react';
+import SearchBar from '../../components/SearchBar/SearchBar';
+import CardList from '../../components/CardList/CardList';
 import data from '../../assets/coctails.json';
-import { DrinksState } from '../../models/drink.model';
 import './HomePage.css';
+import { CocktailModel } from '../../models/coctail.model';
 &nbsp;
-interface MyProps {}
+function HomePage() {
+  const [drinks, setDrinks] = useState&lt;CocktailModel[]&gt;([]);
+  const [filteredDrinks, setFilteredDrinks] = useState&lt;CocktailModel[]&gt;([]);
+  const [searchValue, setSearchValue] = useState('');
 &nbsp;
-export class HomePage extends Component&lt;MyProps, DrinksState&gt; {
+  useEffect(() =&gt; {
+    setDrinks(data.drinks as CocktailModel[]);
+    setFilteredDrinks(data.drinks as CocktailModel[]);
+  }, []);
 &nbsp;
-  constructor(props: MyProps) {
-    super(props);
-    this.state = {drinks: []};
-    this.filterChange = this.filterChange.bind(this);
-  }
+  const filterChange = (value: string) =&gt; {
+    setSearchValue(value);
+    setFilteredDrinks(
+      drinks.filter(<span class="fstat-no" title="function not covered" >(d</span>rink) =&gt;
+<span class="cstat-no" title="statement not covered" >        drink.name.toLocaleLowerCase().includes(value.toLocaleLowerCase())</span>
+      )
+    );
+  };
 &nbsp;
-  componentDidMount(): void {
-      this.setState({
-        drinks: data.drinks as ICocktail[]
-      });
-  }
-&nbsp;
-  private filterChange(value: string) {
-    const updatedList = (data.drinks as ICocktail[]).filter(drink =&gt; drink.strDrink.toLocaleLowerCase().includes(value.toLocaleLowerCase()));
-    this.setState({drinks: updatedList});
-  }  
-&nbsp;
-  render() {
-    {
-      return (
-        &lt;div id='drink-background' className='image-background'&gt;
-          &lt;SearchBar filterChange={this.filterChange}  /&gt;
-          &lt;CardList drinks = {this.state.drinks}/&gt;
-        &lt;/div&gt;
-      );
-    }
-  }
+  return (
+    &lt;div id="drink-background" className="image-background"&gt;
+      &lt;SearchBar filterChange={filterChange} /&gt;
+      &lt;CardList drinks={filteredDrinks} /&gt;
+    &lt;/div&gt;
+  );
 }
+&nbsp;
+export default HomePage;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -193,7 +175,7 @@ export class HomePage extends Component&lt;MyProps, DrinksState&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-03-20T01:28:33.515Z
+                at 2023-03-30T00:00:13.440Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

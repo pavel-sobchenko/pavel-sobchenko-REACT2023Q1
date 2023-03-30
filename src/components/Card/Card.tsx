@@ -1,25 +1,36 @@
-import React, { PropsWithChildren } from 'react';
-import { Component } from "react";
-import { ICocktail } from '../../models/coctail.model';
+import React from 'react';
 import './Card.css';
+import { CocktailModel } from '../../models/coctail.model';
 
-export class Card extends Component<PropsWithChildren<{key: string, value: ICocktail}>> {
-
-    render() {
-        const drink = this.props.value;
-        return <div className='card'>
-                    <div className='title'>{drink.strDrink}</div>
-                    <div className='category'>{drink.strCategory}</div>
-                    <img className='image' src={drink.strDrinkThumb} alt="" />
-                    <div className='ingredients'>
-                        <ul>
-                            {drink.strIngredient1 && <li>{drink.strIngredient1}</li>}
-                            {drink.strIngredient2 && <li>{drink.strIngredient2}</li>}
-                            {drink.strIngredient3 && <li>{drink.strIngredient3}</li>}
-                            {drink.strIngredient4 && <li>{drink.strIngredient4}</li>}
-                            {drink.strIngredient5 && <li>{drink.strIngredient5}</li>}
-                        </ul>
-                    </div>
+function Card(props: { drink: CocktailModel }) {
+  const { drink } = props;
+  return (
+    <div className="card-container relative">
+      <div className="card">
+        <div className="title underline">{drink.name}</div>
+        <div className="category">Category: {drink.category}</div>
+        <div className="glass">Glass type: {drink.glass}</div>
+        <div className="alcoholic">
+          Is Alcoholic: {drink.alcoholic ? 'Yes' : 'No'}
+        </div>
+        <img className="image" src={drink.image} alt="" />
+        <div className="ingredients">
+          <ul>
+            {drink.ingredients.map((item) => (
+              <li key={item.product} className="list-disc">
+                <div className="product text-base">
+                  <span>
+                    {item.product} - {item.volume}
+                  </span>
                 </div>
-    };
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <div className="instructions absolute">{drink.instructions}</div>
+    </div>
+  );
 }
+
+export default Card;

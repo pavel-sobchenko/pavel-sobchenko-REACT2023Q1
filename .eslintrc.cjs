@@ -6,7 +6,7 @@ module.exports = {
   extends: [
     'airbnb',
     'airbnb-typescript',
-    'airbnb/ hooks',
+    'airbnb/hooks',
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended'
@@ -22,9 +22,16 @@ module.exports = {
   plugins: [
     'react',
     '@typescript-eslint',
-    'prettier'
+    'prettier',
+    'react-hooks'
   ],
   rules: {
-    "react/react-in-js-scope": 0
+    "react/react-in-js-scope": 0,
+    "react-hooks/exhaustive-deps": 0,
+    "jsx-a11y/label-has-associated-control": ["error", {
+      "required": {
+        "some": ["nesting", "id"]
+      }
+    }],
   }
 };

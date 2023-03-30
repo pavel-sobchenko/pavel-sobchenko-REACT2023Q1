@@ -1,12 +1,12 @@
-import { Component, ReactNode } from 'react';
 import React from 'react';
 
-
-export class AboutPage extends Component {
-  render(): ReactNode {
-    return <>
-      <h1>About Page</h1>;
-      <h2>Contenet will be added later</h2>
+function AboutPage() {
+  return (
+    <>
+      <h1>About Page</h1>
+      <h2>Content will be added later</h2>
     </>
-  }
+  );
 }
+
+export default AboutPage;

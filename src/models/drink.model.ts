@@ -1,5 +1,5 @@
-import { ICocktail } from "./coctail.model";
+import { CocktailModel } from './coctail.model';
 
-export interface DrinksState{
-    drinks: ICocktail[];
-  }
+export type DrinksState = {
+  drinks: CocktailModel[];
+};
