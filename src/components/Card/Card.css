@@ -1,0 +1,61 @@
+.card {
+    border: 2px solid grey;
+    border-radius: 8px;
+    width: 300px;
+    height: 450px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: silver;
+    margin: 8px;
+    overflow: auto;
+}
+
+.image {
+    width: 200px;
+}
+
+.title {
+    font-weight: 500;
+    font-size: 18px;
+    margin: 4px;
+}
+
+.category {
+    font-weight: 400;
+    font-size: 14px;
+    margin: 4px;
+}
+
+.ingredients {
+    width: 200px;
+}
+
+ul {
+    list-style: square;
+}
+
+.card-container {
+    width: fit-content;
+}
+
+.card-container:hover .instructions {
+    max-height: 100%;
+    transition: max-height 0.25s ease-in-out;
+    background-color: grey;
+    color: blue;
+    padding: 16px;
+    font-size: large;
+    overflow-y: auto;
+}
+
+.instructions {
+    width: 298px;
+    height: 50%;
+    bottom: 10px;
+    left: 10px;
+    max-height: 0;
+    overflow: hidden;
+    border-radius: 6px;
+}
