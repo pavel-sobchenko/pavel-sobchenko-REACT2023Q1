@@ -7,7 +7,7 @@ export interface CocktailModel {
   alcoholic: boolean;
   category: string[];
   glass: string;
-  ingredients: IngredientModel[];
+  ingredients?: IngredientModel[];
 }
 
 export interface IngredientModel {

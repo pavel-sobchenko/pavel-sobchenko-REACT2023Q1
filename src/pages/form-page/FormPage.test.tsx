@@ -16,6 +16,6 @@ describe('Home', () => {
     render(<FormPage />);
     const input = screen.getByLabelText('Name it') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'name' } });
-    expect(input.value).toBe('Name');
+    expect(input.value).toBe('name');
   });
 });

@@ -9,7 +9,7 @@ interface DrinksModel {
 function CardList(props: DrinksModel) {
   const { drinks } = props;
   const drinkItems = drinks.map((drink) => (
-    <Card key={drink.id} drink={drink} />
+    <Card key={drink.id + drink.name} drink={drink} />
   ));
   return (
     <div className="cocktailList flex flex-wrap justify-around w-1/2 m-auto">

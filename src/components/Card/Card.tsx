@@ -16,15 +16,16 @@ function Card(props: { drink: CocktailModel }) {
         <img className="image" src={drink.image} alt="" />
         <div className="ingredients">
           <ul>
-            {drink.ingredients.map((item) => (
-              <li key={item.product} className="list-disc">
-                <div className="product text-base">
-                  <span>
-                    {item.product} - {item.volume}
-                  </span>
-                </div>
-              </li>
-            ))}
+            {drink.ingredients &&
+              drink.ingredients.map((item) => (
+                <li key={item.product} className="list-disc">
+                  <div className="product text-base">
+                    <span>
+                      {item.product} - {item.volume}
+                    </span>
+                  </div>
+                </li>
+              ))}
           </ul>
         </div>
       </div>
