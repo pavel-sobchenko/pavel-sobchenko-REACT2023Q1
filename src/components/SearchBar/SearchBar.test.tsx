@@ -5,15 +5,14 @@ import SearchBar from './SearchBar';
 describe('SearchBar', () => {
   it('should contain input', () => {
     render(<SearchBar filterChange={() => {}} />);
-    const input = screen.getByRole('textbox');
-    expect(input).toBeInTheDocument();
+    const input = screen.getAllByPlaceholderText('Search a cocktail');
+    expect(input).toBeTruthy();
   });
 
-  it('it should allow text data', () => {
+  it('it should allow text data', async () => {
     render(<SearchBar filterChange={() => {}} />);
-    const input = screen.getByRole('textbox') as HTMLInputElement;
-
-    fireEvent.change(input, { target: { value: '123' } });
+    const input = screen.getByRole('searchbox') as HTMLInputElement;
+    await fireEvent.input(input, { target: { value: '123' } });
     expect(input.value).toBe('123');
   });
 });

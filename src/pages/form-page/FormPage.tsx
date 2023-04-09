@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import './FormPage.css';
 import FormComponent from '../../components/Form/Form';
 import { CocktailModel } from '../../models/coctail.model';
-import CardList from '../../components/CardList/CardList';
+import FormCardList from '../../components/FormCardList/FormCardList';
 
 function FormPage() {
 
@@ -15,7 +15,7 @@ function FormPage() {
 
   return <div>
       <FormComponent cardCreate={cardCreate}/>
-      <CardList drinks={drinks}/>
+      <FormCardList drinks={drinks}/>
   </div>;
 }
 

@@ -6,17 +6,6 @@ import { COCKTAIL_TYPES, GLASS_TYPES } from '../../models/constants';
 import { CocktailModel, IngredientModel } from '../../models/coctail.model';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 
-// const emptyForm: CocktailModel = {
-//   name: '',
-//   instructions: '',
-//   image: '',
-//   dateCreated: '',
-//   alcoholic: true,
-//   category: [],
-//   glass: GLASS_TYPES[0].name,
-//   ingredients: [],
-// };
-
 interface IFormInputs {
   name: string;
   instructions: string;
@@ -69,7 +58,7 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
     resetField('volume');
   };
 
-  const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+  const onSubmit: SubmitHandler<IFormInputs> = () => {
     const alco = watch('alcoholic');
     const formData = watch() as OmitCocktailModel;
     const card = Object.assign(formData, {
