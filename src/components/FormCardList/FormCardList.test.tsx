@@ -2,9 +2,9 @@ import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
 import { vi } from 'vitest';
 import Card from '../Card/Card';
+import FormCardList from './FormCardList';
 
 const cocktail = {
-  id?: '1',
   name: '1',
   instructions: '1',
   image: '1',
@@ -14,9 +14,9 @@ const cocktail = {
   glass: '1',
 };
 
-describe('Card List', () => {
-  it('should create a card list', () => {
-    const { container } = render(<Card drink={cocktail} />);
+describe('Form Card List', () => {
+  it('should create a form card list', () => {
+    const { container } = render(<FormCardList drinks={[cocktail]} />);
     const cards = container.getElementsByClassName('card-container');
     expect(cards.length).toEqual(1);
   });
