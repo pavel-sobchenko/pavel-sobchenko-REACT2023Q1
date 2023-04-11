@@ -25,4 +25,21 @@ describe('Card', () => {
     const ingr = screen.getAllByRole('listitem');
     expect(ingr).toHaveLength(2);
   });
+
+  it('it should display is alcoholic', () => {
+    const { container } = render(
+      <ViewCard drink={TEST_ITEM} onCardClick={() => '1'} />
+    );
+    const cardText = container.getElementsByClassName('alcoholic')[0];
+    expect(cardText).toHaveTextContent('Is Alcoholic: Yes');
+  });
+
+  it('it should display is non alcoholic', () => {
+    const item2 = Object.assign(TEST_ITEM, { strAlcoholic: 'Non Alcoholic' });
+    const { container } = render(
+      <ViewCard drink={item2} onCardClick={() => '1'} />
+    );
+    const cardText = container.getElementsByClassName('alcoholic')[0];
+    expect(cardText).toHaveTextContent('Is Alcoholic: No');
+  });
 });

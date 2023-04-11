@@ -34,7 +34,7 @@ function ViewCard(props: ViewCardProps) {
         <div className="title underline">{drink.strDrink}</div>
         <div className="category">Category: {drink.strCategory}</div>
         <div className="alcoholic">
-          Is Alcoholic: {drink.strAlcoholic ? 'Yes' : 'No'}
+          Is Alcoholic: {drink.strAlcoholic === 'Alcoholic' ? 'Yes' : 'No'}
         </div>
         <img className="image" src={drink.strDrinkThumb} alt="" />
         <div className="ingredients">

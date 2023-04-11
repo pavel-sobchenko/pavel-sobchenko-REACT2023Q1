@@ -1,7 +1,6 @@
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import React from 'react';
-import { vi } from 'vitest';
-import Card from '../Card/Card';
+
 import FormCardList from './FormCardList';
 
 const cocktail = {
