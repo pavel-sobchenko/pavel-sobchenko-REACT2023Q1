@@ -22,10 +22,6 @@ function HomePage() {
     );
   };
 
-  useEffect(() => {
-    fetchCocktails();
-  }, []);
-
   const filterChange = (value: string) => {
     if (value.length > 0) {
       setIsLoading(true);
@@ -48,6 +44,15 @@ function HomePage() {
     setModalVisible(false);
     setCard(null);
   };
+
+  useEffect(() => {
+    const value = window.localStorage.getItem('inputValue') || '';
+    if (value.length > 0) {
+      filterChange(value);
+    } else {
+      fetchCocktails();
+    }
+  }, []);
 
   return (
     <div id="drink-background" className="image-background">
