@@ -31,33 +31,41 @@ function DetailedCard(props: { drink: RawCocktailModel }) {
     .filter(Boolean);
 
   return (
-    <div className="card-container relative">
-      <div className="card">
-        <div className="title underline">{drink.strDrink}</div>
-        <div className="category">Category: {drink.strCategory}</div>
-        <div className="alcoholic">
+    <div className="detailed-card-container relative">
+      <div className="detailed-card w-200">
+        <div className="detailed-title underline font-medium text-2xl m-4 text-center">
+          {drink.strDrink}
+        </div>
+        <div className="detailed-category font-medium text-xl text-center">
+          Category: {drink.strCategory}
+        </div>
+        <div className="detailed-alcoholic  font-medium text-xl text-center">
           Is Alcoholic: {drink.strAlcoholic === 'Alcoholic' ? 'Yes' : 'No'}
         </div>
-        <img className="image" src={drink.strDrinkThumb} alt="" />
-        <div className="recepie">
-          <div className="ingredients">
+        <img
+          className="detailed-image w-1/2 h-1/2 m-auto"
+          src={drink.strDrinkThumb}
+          alt=""
+        />
+        <div className="detailed-recepie flex justify-center">
+          <div className="detailed-ingredients pr-4">
             <ul>
               {ingredients &&
                 ingredients.map((item) => (
-                  <li key={item?.id} className="list-disc">
-                    <div className="product text-base">
+                  <li key={item?.id} className="">
+                    <div className="detailed-product text-base">
                       <span>{item?.key}</span>
                     </div>
                   </li>
                 ))}
             </ul>
           </div>
-          <div className="portions">
+          <div className="detailed-portions pl-4">
             <ul>
               {portions &&
                 portions.map((item) => (
-                  <li key={item?.id} className="list-disc">
-                    <div className="product text-base">
+                  <li key={item?.id} className="">
+                    <div className="detailed-product text-base">
                       <span>{item?.key}</span>
                     </div>
                   </li>
@@ -65,7 +73,9 @@ function DetailedCard(props: { drink: RawCocktailModel }) {
             </ul>
           </div>
         </div>
-        <div className="instructions">{drink.strInstructions}</div>
+        <div className="detailed-instructions text-blue-600 w-5/5 bg-gray-200 border-1 radius-2 m-2">
+          {drink.strInstructions}
+        </div>
       </div>
     </div>
   );
