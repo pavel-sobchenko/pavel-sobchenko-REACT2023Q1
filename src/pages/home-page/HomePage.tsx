@@ -14,6 +14,7 @@ function HomePage() {
   const [cocktails, setCocktails] = useState<RawCocktailModel[]>([]);
   const [card, setCard] = useState<RawCocktailModel | null>();
   const [modalVisible, setModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchCocktails = async () => {
     return getRandomCocktailList().then((fetchedCocktails) =>
@@ -27,9 +28,12 @@ function HomePage() {
 
   const filterChange = (value: string) => {
     if (value.length > 0) {
-      searchCocktailByName(value).then((fetchedCocktails) =>
-        setCocktails(fetchedCocktails)
-      );
+      setIsLoading(true);
+      searchCocktailByName(value)
+        .then((fetchedCocktails) => setCocktails(fetchedCocktails))
+        .then(() => {
+          setIsLoading(false);
+        });
     } else {
       fetchCocktails();
     }
@@ -48,11 +52,17 @@ function HomePage() {
   return (
     <div id="drink-background" className="image-background">
       <SearchBar filterChange={filterChange} />
-      <CardList drinks={cocktails} onCardClicked={handleCardClicked} />
-      {modalVisible && (
-        <Modal closeModal={handleClose}>
-          <DetailedCard drink={card as RawCocktailModel} />
-        </Modal>
+      {!isLoading ? (
+        <div>
+          <CardList drinks={cocktails} onCardClicked={handleCardClicked} />
+          {modalVisible && (
+            <Modal closeModal={handleClose}>
+              <DetailedCard drink={card as RawCocktailModel} />
+            </Modal>
+          )}
+        </div>
+      ) : (
+        <div className="text-xl m-auto text-center font-bold">Loading...</div>
       )}
     </div>
   );

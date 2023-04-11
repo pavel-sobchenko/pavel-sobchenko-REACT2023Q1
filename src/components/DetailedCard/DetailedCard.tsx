@@ -1,5 +1,4 @@
 import React from 'react';
-import './DetailedCard.css';
 import ShortUniqueId from 'short-unique-id';
 import { RawCocktailModel } from '../../models/coctail.model';
 
