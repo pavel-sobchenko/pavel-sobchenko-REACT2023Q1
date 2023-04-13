@@ -1,6 +1,6 @@
 import React from 'react';
 import Card from '../Card/Card';
-import { CocktailModel } from '../../models/coctail.model';
+import { CocktailModel } from '../../models/cocktail.model';
 
 interface DrinksModel {
   drinks: CocktailModel[];

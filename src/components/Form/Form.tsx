@@ -3,7 +3,7 @@ import React, { ChangeEvent, useState } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { COCKTAIL_TYPES, GLASS_TYPES } from '../../models/constants';
-import { CocktailModel, IngredientModel } from '../../models/coctail.model';
+import { CocktailModel, IngredientModel } from '../../models/cocktail.model';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 
 interface IFormInputs {
@@ -40,8 +40,6 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
   const handleImage = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       setImage(URL.createObjectURL(event.target.files[0]));
-      // eslint-disable-next-line no-param-reassign
-      event.target.value = '';
     }
   };
 
@@ -73,7 +71,7 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
 
   return (
     <div>
-      <form className="w-1/2 m-auto" onSubmit={handleSubmit(onSubmit)}>
+      <form className="form w-1/2 m-auto" onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-4">
           <div className="border-b border-gray-900/10 pb-6">
             <h1 className="text-base font-bold leading-7 text-gray-900">
@@ -101,7 +99,7 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
                       })}
                       type="text"
                       id="name"
-                      className="block rounded-md border-2 flex-1  py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                      className="name block rounded-md border-2 flex-1  py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                       placeholder="ex: Zombie"
                     />
                   </div>
@@ -124,7 +122,7 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
                       required: 'This field is required',
                     })}
                     rows={3}
-                    className="block w-full p-4 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
+                    className="instr block w-full p-4 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
                   />
                 </div>
                 <ErrorMessage error={errors.instructions?.message} />
@@ -132,7 +130,7 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
 
               <div className="col-span-full">
                 <label
-                  htmlFor="image"
+                  htmlFor="file"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
                   image
@@ -140,10 +138,11 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
                 <div className="mt-2 flex items-center gap-x-3">
                   <input
                     {...register('image')}
+                    id="file"
                     type="file"
                     accept="image/*"
                     onChange={handleImage}
-                    className="rounded-md bg-white py-1.5 px-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    className="input-image rounded-md bg-white py-1.5 px-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                   />
                 </div>
                 {image && (
@@ -265,7 +264,7 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
                   <input
                     type="text"
                     {...register('product')}
-                    className="block rounded-md flex-1 border-2 py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    className="product block rounded-md flex-1 border-2 py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     placeholder="ex: Black Rum"
                   />
                 </div>
@@ -273,7 +272,7 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
                   <input
                     type="text"
                     {...register('volume')}
-                    className="block rounded-md flex-1 border-2 py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    className="volume block rounded-md flex-1 border-2 py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     placeholder="1 part(oz) or 100ml"
                   />
                 </div>

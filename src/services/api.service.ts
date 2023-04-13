@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { RawCocktailModel } from '../models/coctail.model';
+import { RawCocktailModel } from '../models/cocktail.model';
 import { HTTP_BASE_URL, BASE_URL } from '../models/constants';
 
 const getHeader = () => {
@@ -16,8 +16,7 @@ const getRandomCocktailList = async (): Promise<RawCocktailModel[]> => {
       headers: getHeader(),
     }
   );
-
-  return cockatilsData.data.drinks as RawCocktailModel[];
+  return cockatilsData?.data?.drinks as RawCocktailModel[];
 };
 
 const searchCocktailByName = async (q: string) => {
@@ -26,7 +25,7 @@ const searchCocktailByName = async (q: string) => {
     headers: getHeader(),
   });
 
-  return cockatilsData.data.drinks as RawCocktailModel[];
+  return cockatilsData?.data?.drinks as RawCocktailModel[];
 };
 
 export { getRandomCocktailList, searchCocktailByName };

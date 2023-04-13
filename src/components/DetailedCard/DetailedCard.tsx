@@ -1,6 +1,6 @@
 import React from 'react';
 import ShortUniqueId from 'short-unique-id';
-import { RawCocktailModel } from '../../models/coctail.model';
+import { RawCocktailModel } from '../../models/cocktail.model';
 
 function DetailedCard(props: { drink: RawCocktailModel }) {
   const { drink } = props;

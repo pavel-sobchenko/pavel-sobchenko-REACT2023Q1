@@ -1,6 +1,6 @@
 import React from 'react';
 import './Card.css';
-import { CocktailModel } from '../../models/coctail.model';
+import { CocktailModel } from '../../models/cocktail.model';
 
 function Card(props: { drink: CocktailModel }) {
   const { drink } = props;

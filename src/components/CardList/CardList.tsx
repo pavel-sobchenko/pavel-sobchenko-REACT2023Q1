@@ -1,5 +1,5 @@
 import React from 'react';
-import { RawCocktailModel } from '../../models/coctail.model';
+import { RawCocktailModel } from '../../models/cocktail.model';
 import ViewCard from '../ViewCard/ViewCard';
 
 interface DrinksModel {

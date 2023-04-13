@@ -1,7 +1,7 @@
 import React from 'react';
 import './ViewCard.css';
 import ShortUniqueId from 'short-unique-id';
-import { RawCocktailModel } from '../../models/coctail.model';
+import { RawCocktailModel } from '../../models/cocktail.model';
 
 interface ViewCardProps {
   drink: RawCocktailModel;

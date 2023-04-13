@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import CardList from '../../components/CardList/CardList';
 import './HomePage.css';
-import { RawCocktailModel } from '../../models/coctail.model';
+import { RawCocktailModel } from '../../models/cocktail.model';
 import {
   getRandomCocktailList,
   searchCocktailByName,
