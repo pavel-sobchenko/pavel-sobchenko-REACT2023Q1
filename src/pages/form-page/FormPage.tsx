@@ -1,0 +1,22 @@
+/* eslint-disable prettier/prettier */
+import React, { useState } from 'react';
+import './FormPage.css';
+import FormComponent from '../../components/Form/Form';
+import { CocktailModel } from '../../models/cocktail.model';
+import FormCardList from '../../components/FormCardList/FormCardList';
+
+function FormPage() {
+
+  const [drinks, setDrinks] = useState<CocktailModel[]>([]);
+
+  const cardCreate = (value: CocktailModel) => {
+    setDrinks(prev => [...prev, value]);
+  }
+
+  return <div>
+      <FormComponent cardCreate={cardCreate}/>
+      <FormCardList drinks={drinks}/>
+  </div>;
+}
+
+export default FormPage;

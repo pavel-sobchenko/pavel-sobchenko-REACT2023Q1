@@ -1,0 +1,12 @@
+#drink-background {
+    background-image: url(https://www.socialandcocktail.co.uk/wp-content/themes/theme/img/recipes_bg.jpg);
+}
+.image-background {
+    background-attachment: fixed;
+}
+.image-background {
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    background-size: Cover;
+}

@@ -1,0 +1,10 @@
+.cocktail-img {
+    width: 200px;
+    height: 200px;
+}
+
+.form-container {
+    background-image: url("https://www.liquor.com/thmb/MxjchoxdZdSRReOf5ddQcR8PHas=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/sidecar-720x720-primary-f22b3d2c1642473e9305a487c1a8edd2.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
