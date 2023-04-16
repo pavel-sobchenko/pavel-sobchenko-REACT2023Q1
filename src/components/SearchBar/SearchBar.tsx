@@ -1,28 +1,32 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect } from 'react';
+import { useAppSelector, useAppDispatch } from '../../store/hooks';
+import { addSearchValue } from '../../store';
 import './SearchBar.css';
 
-function SearchBar(props: { filterChange: (value: string) => void }) {
+function SearchBar(props: { filterChange: () => void }) {
+  const value = useAppSelector((state) => state.home.searchValue);
+  const dispatch = useAppDispatch();
   const { filterChange } = props;
-  const [searchValue, setSearchValue] = useState('');
 
   useEffect(() => {
-    const value = window.localStorage.getItem('inputValue') || '';
-    if (value.length > 0) {
-      setSearchValue(value);
+    const cacheValue = window.localStorage.getItem('inputValue') || '';
+    if (cacheValue.length > 0) {
+      dispatch(addSearchValue(cacheValue));
     }
   }, []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value);
-    window.localStorage.setItem('inputValue', e.target.value);
-    if (e.target.value === '') {
-      filterChange('');
-    }
+    const val = e.target.value;
+    dispatch(addSearchValue(val));
+    window.localStorage.setItem('inputValue', val);
+    // if (val === '') {
+    //   filterChange();
+    // }
   };
 
   const handleKey = (e: React.KeyboardEvent<HTMLElement>) => {
-    if (e.code === 'Enter' && searchValue.length > 0) {
-      filterChange(searchValue);
+    if (e.code === 'Enter' /*&& value.length > 0*/) {
+      filterChange();
     }
   };
 
@@ -58,7 +62,7 @@ function SearchBar(props: { filterChange: (value: string) => void }) {
           id="default-search"
           className="block search w-full pl-10 pr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="Search a cocktail"
-          value={searchValue}
+          value={value}
           onChange={handleChange}
           onKeyDown={handleKey}
         />

@@ -1,17 +1,21 @@
 import React from 'react';
 import { RawCocktailModel } from '../../models/cocktail.model';
 import ViewCard from '../ViewCard/ViewCard';
+import { useAppDispatch } from '../../store/hooks';
+import { addSelectedCardId, openModal } from '../../store';
 
 interface DrinksModel {
   drinks: RawCocktailModel[];
-  onCardClicked: (id: string) => void;
+  // onCardClicked: (id: string) => void;
 }
 
 function CardList(props: DrinksModel) {
-  const { drinks, onCardClicked } = props;
+  const dispatch = useAppDispatch();
+  const { drinks } = props;
 
   const handleClickCard = (id: string) => {
-    onCardClicked(id);
+    dispatch(addSelectedCardId(id));
+    dispatch(openModal());
   };
 
   const drinkItems = drinks?.map((drink) => {

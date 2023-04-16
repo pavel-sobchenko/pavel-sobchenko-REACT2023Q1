@@ -1,12 +1,16 @@
 import React, { ReactNode } from 'react';
+import { closeModal } from '../../store';
+import { useAppDispatch } from '../../store/hooks';
+
 
 interface ModalProps {
-  closeModal: () => void;
+  // closeModal: () => void;
   children: ReactNode;
 }
 
 export default function Modal(props: ModalProps) {
-  const { children, closeModal } = props;
+  const dispatch = useAppDispatch();
+  const { children } = props;
   return (
     <div>
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none bg-gray-800">
@@ -16,7 +20,7 @@ export default function Modal(props: ModalProps) {
               <button
                 type="button"
                 className="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                onClick={() => closeModal()}
+                onClick={() => dispatch(closeModal())}
               >
                 <span className="bg-transparent text-black h-6 w-6 text-2xl block outline-none focus:outline-none">
                   ×
@@ -29,7 +33,7 @@ export default function Modal(props: ModalProps) {
               <button
                 className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
-                onClick={() => closeModal()}
+                onClick={() => dispatch(closeModal())}
               >
                 Close
               </button>

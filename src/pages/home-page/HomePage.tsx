@@ -3,71 +3,81 @@ import SearchBar from '../../components/SearchBar/SearchBar';
 import CardList from '../../components/CardList/CardList';
 import './HomePage.css';
 import { RawCocktailModel } from '../../models/cocktail.model';
-import {
-  getRandomCocktailList,
-  searchCocktailByName,
-} from '../../services/api.service';
 import Modal from '../../components/Modal/Modal';
 import DetailedCard from '../../components/DetailedCard/DetailedCard';
+import { useAppSelector, useAppDispatch } from '../../store/hooks';
+import {
+  fetchRandomCocktails,
+  searchCocktailByName,
+  clearSearchedCars,
+  addSearchValue,
+  closeModal,
+} from '../../store/index';
 
 function HomePage() {
-  const [cocktails, setCocktails] = useState<RawCocktailModel[]>([]);
-  const [card, setCard] = useState<RawCocktailModel | null>();
-  const [modalVisible, setModalVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useAppDispatch();
+  const searchValue = useAppSelector((state) => state.home.searchValue);
+  const defaultCocktails = useAppSelector((state) => state.home.defaultCards);
+  const filteredCocktails = useAppSelector((state) => state.home.filteredCards);
+  const isEmptyResult = useAppSelector((state) => state.home.isEmptyResult);
+  const isLoading = useAppSelector((state) => state.home.isLoading);
+  const modalVisible = useAppSelector((state) => state.home.isModal);
+  const selectedCocktailId = useAppSelector(
+    (state) => state.home.selectedCardId
+  );
 
-  const fetchCocktails = async () => {
-    return getRandomCocktailList().then((fetchedCocktails) =>
-      setCocktails(fetchedCocktails)
-    );
-  };
-
-  const filterChange = (value: string) => {
-    if (value.length > 0) {
-      setIsLoading(true);
-      searchCocktailByName(value)
-        .then((fetchedCocktails) => setCocktails(fetchedCocktails))
-        .then(() => {
-          setIsLoading(false);
-        });
+  const filterChange = () => {
+    if (searchValue.length > 0) {
+      dispatch(searchCocktailByName(searchValue));
     } else {
-      fetchCocktails();
+      dispatch(clearSearchedCars());
     }
-  };
-
-  const handleCardClicked = (id: string) => {
-    setModalVisible(true);
-    setCard(cocktails.find((c: RawCocktailModel) => c.idDrink === id));
-  };
-
-  const handleClose = () => {
-    setModalVisible(false);
-    setCard(null);
   };
 
   useEffect(() => {
     const value = window.localStorage.getItem('inputValue') || '';
     if (value.length > 0) {
-      filterChange(value);
-    } else {
-      fetchCocktails();
+      dispatch(searchCocktailByName(value));
+      dispatch(addSearchValue(value));
+    } else if (!defaultCocktails.length) {
+      dispatch(fetchRandomCocktails());
     }
+
+    return () => {
+      dispatch(closeModal());
+    };
   }, []);
+
+  const cocktailsToDisplay = filteredCocktails?.length
+    ? filteredCocktails
+    : defaultCocktails;
 
   return (
     <div id="drink-background" className="image-background">
       <SearchBar filterChange={filterChange} />
-      {!isLoading ? (
+      {isLoading && (
+        <div className="text-xl m-auto text-center font-bold">Loading...</div>
+      )}
+      {isEmptyResult && (
+        <div className="text-xl m-auto text-center font-bold">
+          No result was found. Please, change the search criteria...
+        </div>
+      )}
+      {!isLoading && !isEmptyResult && (
         <div>
-          <CardList drinks={cocktails} onCardClicked={handleCardClicked} />
+          <CardList drinks={cocktailsToDisplay} />
           {modalVisible && (
-            <Modal closeModal={handleClose}>
-              <DetailedCard drink={card as RawCocktailModel} />
+            <Modal>
+              <DetailedCard
+                drink={
+                  cocktailsToDisplay.find(
+                    (c) => c.idDrink === selectedCocktailId
+                  ) as RawCocktailModel
+                }
+              />
             </Modal>
           )}
         </div>
-      ) : (
-        <div className="text-xl m-auto text-center font-bold">Loading...</div>
       )}
     </div>
   );
