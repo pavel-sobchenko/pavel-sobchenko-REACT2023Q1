@@ -32,5 +32,6 @@ module.exports = {
     ],
     'react/jsx-props-no-spreading': 'off',
     'jsx-a11y/click-events-have-key-events': 'off',
+    'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
   },
 };

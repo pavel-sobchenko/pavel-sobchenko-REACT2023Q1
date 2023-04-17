@@ -6,7 +6,6 @@ import { addSelectedCardId, openModal } from '../../store';
 
 interface DrinksModel {
   drinks: RawCocktailModel[];
-  // onCardClicked: (id: string) => void;
 }
 
 function CardList(props: DrinksModel) {
