@@ -49,7 +49,6 @@ describe('Form ', () => {
   it('should create a new card', async () => {
     const foo = vi.fn();
     const { container } = render(<FormComponent cardCreate={foo} />);
-    const saveBtn = screen.getByText('Save');
 
     const form = container.getElementsByClassName(
       'form'

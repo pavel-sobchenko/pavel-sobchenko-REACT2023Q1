@@ -2,9 +2,7 @@ import React, { ReactNode } from 'react';
 import { closeModal } from '../../store';
 import { useAppDispatch } from '../../store/hooks';
 
-
 interface ModalProps {
-  // closeModal: () => void;
   children: ReactNode;
 }
 

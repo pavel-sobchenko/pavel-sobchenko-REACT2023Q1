@@ -19,13 +19,10 @@ function SearchBar(props: { filterChange: () => void }) {
     const val = e.target.value;
     dispatch(addSearchValue(val));
     window.localStorage.setItem('inputValue', val);
-    // if (val === '') {
-    //   filterChange();
-    // }
   };
 
   const handleKey = (e: React.KeyboardEvent<HTMLElement>) => {
-    if (e.code === 'Enter' /*&& value.length > 0*/) {
+    if (e.code === 'Enter') {
       filterChange();
     }
   };

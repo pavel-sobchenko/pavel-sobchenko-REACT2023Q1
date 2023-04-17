@@ -7,10 +7,17 @@ import {
   openModal,
   closeModal,
 } from './slices/home.slices';
+import {
+  formReducer,
+  addName,
+  addInstructions,
+  addImage,
+} from './slices/form.slices';
 
 const store = configureStore({
   reducer: {
     home: homeReducer,
+    form: formReducer,
   },
 });
 
@@ -26,4 +33,7 @@ export {
   addSelectedCardId,
   openModal,
   closeModal,
+  addName,
+  addInstructions,
+  addImage,
 };

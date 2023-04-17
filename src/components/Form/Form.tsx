@@ -2,9 +2,11 @@ import './Form.style.css';
 import React, { ChangeEvent, useState } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import { COCKTAIL_TYPES, GLASS_TYPES } from '../../models/constants';
 import { CocktailModel, IngredientModel } from '../../models/cocktail.model';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
+import { addImage, addInstructions, addName } from '../../store';
 
 interface IFormInputs {
   name: string;
@@ -33,13 +35,23 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
       alcoholic: 'alco',
     },
   });
-  const [image, setImage] = useState('');
+  const dispatch = useAppDispatch();
+  const { name, instructions, image } = useAppSelector((state) => state.form);
+
   const [ingredients, setIngredients] = useState<IngredientModel[]>([]);
   const { cardCreate } = props;
 
+  const handleName = (event: ChangeEvent<HTMLInputElement>) => {
+    dispatch(addName(event.target.value));
+  };
+
+  const handleInstructions = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    dispatch(addInstructions(event.target.value));
+  };
+
   const handleImage = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-      setImage(URL.createObjectURL(event.target.files[0]));
+      dispatch(addImage(URL.createObjectURL(event.target.files[0])));
     }
   };
 
@@ -99,6 +111,8 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
                       })}
                       type="text"
                       id="name"
+                      value={name}
+                      onChange={handleName}
                       className="name block rounded-md border-2 flex-1  py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                       placeholder="ex: Zombie"
                     />
@@ -122,6 +136,8 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
                       required: 'This field is required',
                     })}
                     rows={3}
+                    value={instructions}
+                    onChange={handleInstructions}
                     className="instr block w-full p-4 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
                   />
                 </div>
