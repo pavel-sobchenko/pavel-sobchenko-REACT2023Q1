@@ -12,6 +12,12 @@ import {
   addName,
   addInstructions,
   addImage,
+  addDate,
+  addAlco,
+  addCategory,
+  addGlass,
+  addIngredients,
+  clearStore,
 } from './slices/form.slices';
 
 const store = configureStore({
@@ -36,4 +42,10 @@ export {
   addName,
   addInstructions,
   addImage,
+  addDate,
+  addAlco,
+  addCategory,
+  addGlass,
+  addIngredients,
+  clearStore,
 };

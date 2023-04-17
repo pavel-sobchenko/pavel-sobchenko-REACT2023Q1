@@ -1,12 +1,23 @@
 import './Form.style.css';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent } from 'react';
+import { nanoid } from '@reduxjs/toolkit';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import { COCKTAIL_TYPES, GLASS_TYPES } from '../../models/constants';
 import { CocktailModel, IngredientModel } from '../../models/cocktail.model';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
-import { addImage, addInstructions, addName } from '../../store';
+import {
+  addAlco,
+  addCategory,
+  addDate,
+  addGlass,
+  addImage,
+  addIngredients,
+  addInstructions,
+  addName,
+  clearStore,
+} from '../../store';
 
 interface IFormInputs {
   name: string;
@@ -20,15 +31,12 @@ interface IFormInputs {
   volume: string;
 }
 
-type OmitCocktailModel = Omit<CocktailModel, 'alcoholic'>;
-
 function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
   const {
     register,
     handleSubmit,
     watch,
     resetField,
-    reset,
     formState: { errors },
   } = useForm<IFormInputs>({
     defaultValues: {
@@ -36,9 +44,17 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
     },
   });
   const dispatch = useAppDispatch();
-  const { name, instructions, image } = useAppSelector((state) => state.form);
+  const {
+    name,
+    instructions,
+    image,
+    date,
+    alcoholic,
+    category,
+    glass,
+    ingredients,
+  } = useAppSelector((state) => state.form);
 
-  const [ingredients, setIngredients] = useState<IngredientModel[]>([]);
   const { cardCreate } = props;
 
   const handleName = (event: ChangeEvent<HTMLInputElement>) => {
@@ -55,6 +71,31 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
     }
   };
 
+  const handleDate = (event: ChangeEvent<HTMLInputElement>) => {
+    dispatch(addDate(event.target.value));
+  };
+
+  const getDate = () => {
+    const year = new Date(date).getFullYear();
+    const month = new Date(date).getMonth();
+    const day = new Date(date).getDate();
+    return `${year}-${month < 10 ? `0${month}` : month}-${
+      day < 10 ? `0${day}` : day
+    }`;
+  };
+
+  const handleAlco = (event: ChangeEvent<HTMLInputElement>) => {
+    dispatch(addAlco(event.target.value));
+  };
+
+  const handleCategory = (event: ChangeEvent<HTMLInputElement>) => {
+    dispatch(addCategory(event.target.value));
+  };
+
+  const handleGlass = (event: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(addGlass(event.target.value));
+  };
+
   const handleAdd = () => {
     const product = watch('product');
     const volume = watch('volume');
@@ -63,22 +104,25 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
     if (ingredients.some((v: IngredientModel) => v.product === product)) return;
 
     const ingredient: IngredientModel = { product, volume };
-    setIngredients([...ingredients, ingredient]);
+    dispatch(addIngredients(ingredient));
     resetField('product');
     resetField('volume');
   };
 
   const onSubmit: SubmitHandler<IFormInputs> = () => {
-    const alco = watch('alcoholic');
-    const formData = watch() as OmitCocktailModel;
-    const card = Object.assign(formData, {
-      alcoholic: alco === 'alcoholic',
-      ingredients,
+    const card = {
+      id: nanoid(),
+      name,
+      instructions,
       image,
-    });
+      dateCreated: date,
+      alcoholic: alcoholic === 'alco',
+      category,
+      glass,
+      ingredients,
+    } as CocktailModel;
     cardCreate(card);
-    reset();
-    setIngredients([]);
+    dispatch(clearStore());
   };
 
   return (
@@ -173,8 +217,10 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
               <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                 <input
                   {...register('dateCreated')}
-                  type="dateCreated"
-                  className="block flex-1 border-0 py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                  type="date"
+                  value={getDate()}
+                  onChange={handleDate}
+                  className="block flex-1 border-2 py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
@@ -191,6 +237,8 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
                   type="radio"
                   value="alco"
                   className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                  onChange={handleAlco}
+                  checked={alcoholic === 'alco'}
                 />
                 <label
                   htmlFor="push-everything"
@@ -205,6 +253,8 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
                   value="free"
                   type="radio"
                   className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                  onChange={handleAlco}
+                  checked={alcoholic === 'free'}
                 />
                 <label
                   htmlFor="push-email"
@@ -230,6 +280,8 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
                             value={item.name}
                             type="checkbox"
                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                            onChange={handleCategory}
+                            checked={category.includes(item.name)}
                           />
                         </div>
                         <div className="text-sm leading-6">
@@ -259,6 +311,8 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
                 <select
                   {...register('glass')}
                   id="glass"
+                  onChange={handleGlass}
+                  value={glass}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                 >
                   {GLASS_TYPES.map((item) => (
