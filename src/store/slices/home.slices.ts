@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-// import { useSelector } from 'react-redux';
 import { HomeStateModel } from '../../models/home-state.model';
 import {
   fetchRandomCocktails,
