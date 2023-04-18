@@ -1,17 +1,14 @@
 import React from 'react';
-import { vi } from 'vitest';
 import { Provider } from 'react-redux';
 import { render, screen, fireEvent } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import FormComponent from './Form';
 import { store } from '../../store';
 
 describe('Form ', () => {
   it('should display form', async () => {
-    const foo = vi.fn();
     render(
       <Provider store={store}>
-        <FormComponent cardCreate={foo} />
+        <FormComponent />
       </Provider>
     );
     const title = await screen.getByText('Add your own cocktail recipe');
@@ -19,10 +16,9 @@ describe('Form ', () => {
   });
 
   it('it should add ingredient', async () => {
-    const foo = vi.fn();
     const { container } = render(
       <Provider store={store}>
-        <FormComponent cardCreate={foo} />
+        <FormComponent />
       </Provider>
     );
     const ingr = container.getElementsByClassName(
@@ -41,10 +37,9 @@ describe('Form ', () => {
   });
 
   it('should create a new card', async () => {
-    const foo = vi.fn();
     const { container } = render(
       <Provider store={store}>
-        <FormComponent cardCreate={foo} />
+        <FormComponent />
       </Provider>
     );
 

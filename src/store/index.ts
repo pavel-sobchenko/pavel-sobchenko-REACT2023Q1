@@ -18,6 +18,7 @@ import {
   addGlass,
   addIngredients,
   clearStore,
+  addCard,
 } from './slices/form.slices';
 
 const store = configureStore({
@@ -48,4 +49,5 @@ export {
   addGlass,
   addIngredients,
   clearStore,
+  addCard,
 };

@@ -11,6 +11,7 @@ interface FormStateModel {
   category: string[];
   glass: string;
   ingredients: IngredientModel[];
+  cards: FormStateModel[];
 }
 
 const INIT_STATE: FormStateModel = {
@@ -22,6 +23,7 @@ const INIT_STATE: FormStateModel = {
   category: [],
   glass: '',
   ingredients: [],
+  cards: [],
 };
 
 const formSlice = createSlice({
@@ -57,6 +59,9 @@ const formSlice = createSlice({
     addIngredients(state, action) {
       state.ingredients.push(action.payload);
     },
+    addCard(state, action) {
+      state.cards.push(action.payload);
+    },
     clearStore(state) {
       state.name = '';
       state.instructions = '';
@@ -80,5 +85,6 @@ export const {
   addGlass,
   addIngredients,
   clearStore,
+  addCard,
 } = formSlice.actions;
 export const formReducer = formSlice.reducer;

@@ -9,6 +9,7 @@ import { CocktailModel, IngredientModel } from '../../models/cocktail.model';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import {
   addAlco,
+  addCard,
   addCategory,
   addDate,
   addGlass,
@@ -31,7 +32,8 @@ interface IFormInputs {
   volume: string;
 }
 
-function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
+// function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
+function FormComponent() {
   const {
     register,
     handleSubmit,
@@ -55,7 +57,7 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
     ingredients,
   } = useAppSelector((state) => state.form);
 
-  const { cardCreate } = props;
+  // const { cardCreate } = props;
 
   const handleName = (event: ChangeEvent<HTMLInputElement>) => {
     dispatch(addName(event.target.value));
@@ -121,7 +123,8 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
       glass,
       ingredients,
     } as CocktailModel;
-    cardCreate(card);
+    // cardCreate(card);
+    dispatch(addCard(card));
     dispatch(clearStore());
   };
 
