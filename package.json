@@ -4,21 +4,25 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
-    "test": "vitest",
-    "coverage": "vitest run --coverage",
-    "lint": "npx eslint ./src",
-    "lint-fix": "npx eslint ./src --fix"
+    "dev": "NODE_ENV=development node server",
+    "build": "rm -rf dist && npm run build:client && npm run build:server",
+    "build:client": "vite build --outDir dist/client",
+    "build:server": "vite build --ssr src/entry-server.tsx --outDir dist/server",
+    "serve": "NODE_ENV=production node server",
+    "lint": "eslint --ext .ts src",
+    "lint:fix": "eslint --ext .tsx src --fix"
   },
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.9",
-    "react-router-dom": "^6.9.0",
-    "vitest": "^0.29.2"
+    "vitest": "^0.29.2",
+    "h3": "^0.8.6",
+    "listhen": "^0.3.5",
+    "million": "^1.12.6-beta.2",
+    "react-router-dom": "^6.4.3",
+    "sirv": "^2.0.2"
   },
   "devDependencies": {
     "@testing-library/react": "^14.0.0",
