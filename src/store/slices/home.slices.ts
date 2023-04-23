@@ -52,7 +52,7 @@ const homeSlice = createSlice({
     builder.addCase(fetchRandomCocktails.rejected, (state, action) => {
       state.isLoading = false;
       state.isEmptyResult = false;
-      state.error = action.payload;
+      state.error = action.payload as Error;
     });
     builder.addCase(searchCocktailByName.pending, (state) => {
       state.isLoading = true;
@@ -71,7 +71,7 @@ const homeSlice = createSlice({
     builder.addCase(searchCocktailByName.rejected, (state, action) => {
       state.isLoading = false;
       state.isEmptyResult = false;
-      state.error = action.payload;
+      state.error = action.payload as Error;
     });
   },
 });
@@ -83,7 +83,5 @@ export const {
   openModal,
   closeModal,
 } = homeSlice.actions;
-
-// export const selectSearchValue = (state: RootState) => state.home.searchValue;
 
 export const homeReducer = homeSlice.reducer;

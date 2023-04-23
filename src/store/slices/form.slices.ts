@@ -62,7 +62,7 @@ const formSlice = createSlice({
     addCard(state, action) {
       state.cards.push(action.payload);
     },
-    clearStore(state) {
+    clearForm(state) {
       state.name = '';
       state.instructions = '';
       state.image = '';
@@ -84,7 +84,7 @@ export const {
   addCategory,
   addGlass,
   addIngredients,
-  clearStore,
+  clearForm,
   addCard,
 } = formSlice.actions;
 export const formReducer = formSlice.reducer;

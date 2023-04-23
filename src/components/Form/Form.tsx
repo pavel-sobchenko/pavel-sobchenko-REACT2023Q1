@@ -17,7 +17,7 @@ import {
   addIngredients,
   addInstructions,
   addName,
-  clearStore,
+  clearForm,
 } from '../../store';
 
 interface IFormInputs {
@@ -32,7 +32,6 @@ interface IFormInputs {
   volume: string;
 }
 
-// function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
 function FormComponent() {
   const {
     register,
@@ -56,8 +55,6 @@ function FormComponent() {
     glass,
     ingredients,
   } = useAppSelector((state) => state.form);
-
-  // const { cardCreate } = props;
 
   const handleName = (event: ChangeEvent<HTMLInputElement>) => {
     dispatch(addName(event.target.value));
@@ -123,9 +120,8 @@ function FormComponent() {
       glass,
       ingredients,
     } as CocktailModel;
-    // cardCreate(card);
     dispatch(addCard(card));
-    dispatch(clearStore());
+    dispatch(clearForm());
   };
 
   return (

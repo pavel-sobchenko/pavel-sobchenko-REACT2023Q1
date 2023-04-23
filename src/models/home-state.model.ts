@@ -6,7 +6,7 @@ export interface HomeStateModel {
   searchValue: string;
   defaultCards: RawCocktailModel[];
   filteredCards: RawCocktailModel[];
-  isEmptyResult: false;
+  isEmptyResult: boolean;
   selectedCardId: string | null;
   isModal: boolean;
 }

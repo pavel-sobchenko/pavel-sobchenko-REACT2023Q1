@@ -17,7 +17,7 @@ import {
   addCategory,
   addGlass,
   addIngredients,
-  clearStore,
+  clearForm,
   addCard,
 } from './slices/form.slices';
 
@@ -48,6 +48,6 @@ export {
   addCategory,
   addGlass,
   addIngredients,
-  clearStore,
+  clearForm,
   addCard,
 };
