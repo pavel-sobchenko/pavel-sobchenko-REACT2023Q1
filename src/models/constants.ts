@@ -1,3 +1,6 @@
+export const BASE_URL = 'the-cocktail-db.p.rapidapi.com';
+export const HTTP_BASE_URL = `https://${BASE_URL}`;
+
 export const COCKTAIL_TYPES = [
   { id: 1, name: 'Short Cocktails', example: ' Negroni, Martini' },
   { id: 2, name: 'Highball Cocktails', example: 'Mojito, Cuba Libre' },

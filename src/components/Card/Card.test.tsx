@@ -35,4 +35,17 @@ describe('Card', () => {
     const ingr = screen.getAllByRole('listitem');
     expect(ingr).toHaveLength(2);
   });
+
+  it('it should display is alcoholic', () => {
+    const { container } = render(<Card drink={item} />);
+    const cardText = container.getElementsByClassName('alcoholic')[0];
+    expect(cardText).toHaveTextContent('Is Alcoholic: Yes');
+  });
+
+  it('it should display is non alcoholic', () => {
+    const item2 = Object.assign(item, { alcoholic: false });
+    const { container } = render(<Card drink={item2} />);
+    const cardText = container.getElementsByClassName('alcoholic')[0];
+    expect(cardText).toHaveTextContent('Is Alcoholic: No');
+  });
 });

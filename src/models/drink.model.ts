@@ -1,4 +1,4 @@
-import { CocktailModel } from './coctail.model';
+import { CocktailModel } from './cocktail.model';
 
 export type DrinksState = {
   drinks: CocktailModel[];

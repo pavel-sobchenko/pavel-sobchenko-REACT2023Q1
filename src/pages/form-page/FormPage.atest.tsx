@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import FormPage from './FormPage';
 
-describe('Home', () => {
+describe('Form', () => {
   it('should contain title', () => {
     render(<FormPage />);
     expect(

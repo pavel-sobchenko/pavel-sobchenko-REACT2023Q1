@@ -1,21 +1,24 @@
 import './Form.style.css';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent } from 'react';
+import { nanoid } from '@reduxjs/toolkit';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import { COCKTAIL_TYPES, GLASS_TYPES } from '../../models/constants';
-import { CocktailModel, IngredientModel } from '../../models/coctail.model';
+import { CocktailModel, IngredientModel } from '../../models/cocktail.model';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
-
-// const emptyForm: CocktailModel = {
-//   name: '',
-//   instructions: '',
-//   image: '',
-//   dateCreated: '',
-//   alcoholic: true,
-//   category: [],
-//   glass: GLASS_TYPES[0].name,
-//   ingredients: [],
-// };
+import {
+  addAlco,
+  addCard,
+  addCategory,
+  addDate,
+  addGlass,
+  addImage,
+  addIngredients,
+  addInstructions,
+  addName,
+  clearForm,
+} from '../../store';
 
 interface IFormInputs {
   name: string;
@@ -29,31 +32,67 @@ interface IFormInputs {
   volume: string;
 }
 
-type OmitCocktailModel = Omit<CocktailModel, 'alcoholic'>;
-
-function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
+function FormComponent() {
   const {
     register,
     handleSubmit,
     watch,
     resetField,
-    reset,
     formState: { errors },
   } = useForm<IFormInputs>({
     defaultValues: {
       alcoholic: 'alco',
     },
   });
-  const [image, setImage] = useState('');
-  const [ingredients, setIngredients] = useState<IngredientModel[]>([]);
-  const { cardCreate } = props;
+  const dispatch = useAppDispatch();
+  const {
+    name,
+    instructions,
+    image,
+    date,
+    alcoholic,
+    category,
+    glass,
+    ingredients,
+  } = useAppSelector((state) => state.form);
+
+  const handleName = (event: ChangeEvent<HTMLInputElement>) => {
+    dispatch(addName(event.target.value));
+  };
+
+  const handleInstructions = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    dispatch(addInstructions(event.target.value));
+  };
 
   const handleImage = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-      setImage(URL.createObjectURL(event.target.files[0]));
-      // eslint-disable-next-line no-param-reassign
-      event.target.value = '';
+      dispatch(addImage(URL.createObjectURL(event.target.files[0])));
     }
+  };
+
+  const handleDate = (event: ChangeEvent<HTMLInputElement>) => {
+    dispatch(addDate(event.target.value));
+  };
+
+  const getDate = () => {
+    const year = new Date(date).getFullYear();
+    const month = new Date(date).getMonth();
+    const day = new Date(date).getDate();
+    return `${year}-${month < 10 ? `0${month}` : month}-${
+      day < 10 ? `0${day}` : day
+    }`;
+  };
+
+  const handleAlco = (event: ChangeEvent<HTMLInputElement>) => {
+    dispatch(addAlco(event.target.value));
+  };
+
+  const handleCategory = (event: ChangeEvent<HTMLInputElement>) => {
+    dispatch(addCategory(event.target.value));
+  };
+
+  const handleGlass = (event: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(addGlass(event.target.value));
   };
 
   const handleAdd = () => {
@@ -64,27 +103,30 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
     if (ingredients.some((v: IngredientModel) => v.product === product)) return;
 
     const ingredient: IngredientModel = { product, volume };
-    setIngredients([...ingredients, ingredient]);
+    dispatch(addIngredients(ingredient));
     resetField('product');
     resetField('volume');
   };
 
-  const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-    const alco = watch('alcoholic');
-    const formData = watch() as OmitCocktailModel;
-    const card = Object.assign(formData, {
-      alcoholic: alco === 'alcoholic',
-      ingredients,
+  const onSubmit: SubmitHandler<IFormInputs> = () => {
+    const card = {
+      id: nanoid(),
+      name,
+      instructions,
       image,
-    });
-    cardCreate(card);
-    reset();
-    setIngredients([]);
+      dateCreated: date,
+      alcoholic: alcoholic === 'alco',
+      category,
+      glass,
+      ingredients,
+    } as CocktailModel;
+    dispatch(addCard(card));
+    dispatch(clearForm());
   };
 
   return (
     <div>
-      <form className="w-1/2 m-auto" onSubmit={handleSubmit(onSubmit)}>
+      <form className="form w-1/2 m-auto" onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-4">
           <div className="border-b border-gray-900/10 pb-6">
             <h1 className="text-base font-bold leading-7 text-gray-900">
@@ -112,7 +154,9 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
                       })}
                       type="text"
                       id="name"
-                      className="block rounded-md border-2 flex-1  py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                      value={name}
+                      onChange={handleName}
+                      className="name block rounded-md border-2 flex-1  py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                       placeholder="ex: Zombie"
                     />
                   </div>
@@ -135,7 +179,9 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
                       required: 'This field is required',
                     })}
                     rows={3}
-                    className="block w-full p-4 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
+                    value={instructions}
+                    onChange={handleInstructions}
+                    className="instr block w-full p-4 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
                   />
                 </div>
                 <ErrorMessage error={errors.instructions?.message} />
@@ -143,7 +189,7 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
 
               <div className="col-span-full">
                 <label
-                  htmlFor="image"
+                  htmlFor="file"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
                   image
@@ -151,10 +197,11 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
                 <div className="mt-2 flex items-center gap-x-3">
                   <input
                     {...register('image')}
+                    id="file"
                     type="file"
                     accept="image/*"
                     onChange={handleImage}
-                    className="rounded-md bg-white py-1.5 px-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    className="input-image rounded-md bg-white py-1.5 px-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                   />
                 </div>
                 {image && (
@@ -169,8 +216,10 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
               <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                 <input
                   {...register('dateCreated')}
-                  type="dateCreated"
-                  className="block flex-1 border-0 py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                  type="date"
+                  value={getDate()}
+                  onChange={handleDate}
+                  className="block flex-1 border-2 py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
@@ -187,6 +236,8 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
                   type="radio"
                   value="alco"
                   className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                  onChange={handleAlco}
+                  checked={alcoholic === 'alco'}
                 />
                 <label
                   htmlFor="push-everything"
@@ -201,6 +252,8 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
                   value="free"
                   type="radio"
                   className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                  onChange={handleAlco}
+                  checked={alcoholic === 'free'}
                 />
                 <label
                   htmlFor="push-email"
@@ -226,6 +279,8 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
                             value={item.name}
                             type="checkbox"
                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                            onChange={handleCategory}
+                            checked={category.includes(item.name)}
                           />
                         </div>
                         <div className="text-sm leading-6">
@@ -255,6 +310,8 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
                 <select
                   {...register('glass')}
                   id="glass"
+                  onChange={handleGlass}
+                  value={glass}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                 >
                   {GLASS_TYPES.map((item) => (
@@ -276,7 +333,7 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
                   <input
                     type="text"
                     {...register('product')}
-                    className="block rounded-md flex-1 border-2 py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    className="product block rounded-md flex-1 border-2 py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     placeholder="ex: Black Rum"
                   />
                 </div>
@@ -284,7 +341,7 @@ function FormComponent(props: { cardCreate: (value: CocktailModel) => void }) {
                   <input
                     type="text"
                     {...register('volume')}
-                    className="block rounded-md flex-1 border-2 py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    className="volume block rounded-md flex-1 border-2 py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     placeholder="1 part(oz) or 100ml"
                   />
                 </div>

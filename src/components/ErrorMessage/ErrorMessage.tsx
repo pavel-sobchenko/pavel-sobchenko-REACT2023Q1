@@ -1,6 +1,11 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
-import { FieldError, Merge, FieldErrorsImpl } from 'react-hook-form';
+import {
+  FieldError,
+  Merge,
+  FieldErrorsImpl,
+  FieldValues,
+} from 'react-hook-form';
 
 function ErrorMessage({
   error,
@@ -8,7 +13,7 @@ function ErrorMessage({
   error:
     | string
     | FieldError
-    | Merge<FieldError, FieldErrorsImpl<any>>
+    | Merge<FieldError, FieldErrorsImpl<FieldValues>>
     | undefined;
 }) {
   return (
